@@ -29,7 +29,7 @@ switch (command) {
   case 'ci':
     ci.init()
     break
-  // todo tik gen {xxxß}
+  // todo tik gen {xxx}
   case 'gen':
     break;
   default:
