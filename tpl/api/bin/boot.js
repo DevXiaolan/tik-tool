@@ -1,5 +1,5 @@
 let { EOL } = require('os')
-let conf = require('dotenv').load('../.env')
+let conf = require('dotenv').load()
 
 console.log(EOL + '============CONFIG============')
 for (let k in process.env) {
@@ -7,7 +7,7 @@ for (let k in process.env) {
 }
 console.log('==============================' + EOL)
 
-const CONFIG = require('../config/app')
+let PORT = process.env.API_PORT || 3008
 
-require('../app').listen(CONFIG.PORT)
-console.log(`${EOL}starting at port ${CONFIG.PORT}`)
+require('../app').listen(PORT)
+console.log(`${EOL}starting at port ${PORT}`)

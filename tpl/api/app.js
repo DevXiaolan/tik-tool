@@ -8,7 +8,7 @@ const bouncer = require('koa-bouncer')
 const cors = require('./middlewares/cors')
 const mongo = require('./utils/mongo')
 const router = require('./src/router')
-const errorHandler = require('./utils/error_handler')
+const errorHandler = require('./middlewares/error_handler')
 const traceId = require('./middlewares/trace_id')
 
 const log4js = require('./utils/logger')

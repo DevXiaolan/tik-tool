@@ -17,9 +17,6 @@ if (argv.h === true || argv.help === true) {
 let command = argv._[0]
 
 switch (command) {
-  // 你好世界 tik helloworld
-  case 'helloworld':
-    break
   // 创建项目 tik create {projectname}
   case 'create':
     project.create(argv)
@@ -32,6 +29,9 @@ switch (command) {
   case 'ci':
     ci.init()
     break
+  // todo tik gen {xxxß}
+  case 'gen':
+    break;
   default:
     break
 }

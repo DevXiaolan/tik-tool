@@ -12,6 +12,7 @@ const init = (argv) => {
     rancherCompose(projectRoot)
     syncEnv(projectRoot)
     buildFile(projectRoot)
+    upgrade(projectRoot)
   } else {
     Err(`Project Root Invalid: ${projectRoot}`)
   }
@@ -47,9 +48,10 @@ ${(env => {
 }
 
 const rancherCompose = (projectRoot) => {
+  let env = dotenv.load({ path: `${projectRoot}/.env` }).parsed
   let tpl = `version: '2'
 services:
-  api:
+  ${env.APP_NAME}:
     scale: 2
     start_on_create: true`
   fs.writeFileSync(`${projectRoot}/rancher-compose.yml`, tpl)
@@ -59,11 +61,22 @@ services:
 const buildFile = (projectRoot) => {
   let env = dotenv.load({ path: `${projectRoot}/.env` }).parsed
   let pkg = require(`${projectRoot}/package.json`)
-  let tpl = `docker build -t ${env.APP_NAME}:${pkg.version}
+  
+  let tpl = `docker build -t ${env.APP_NAME}:${pkg.version} .
 docker rmi \`docker images -q -f dangling=true\``
   fs.writeFileSync(`${projectRoot}/build`, tpl)
   shell.chmod('+x', `${projectRoot}/build`)
   console.log(`File generated: ${projectRoot}/build`.blue)
+}
+
+
+const upgrade = (projectRoot) => {
+  let env = dotenv.load({ path: `${projectRoot}/.env` }).parsed
+  let pkg = require(`${projectRoot}/package.json`)
+  let tpl = `rancher up -d  --pull --force-upgrade --confirm-upgrade --stack coins007-${env.APP_NAME}-${pkg.version}`
+  fs.writeFileSync(`${projectRoot}/upgrade`, tpl)
+  shell.chmod('+x', `${projectRoot}/upgrade`)
+  console.log(`File generated: ${projectRoot}/upgrade`.blue)
 }
 
 function syncEnv(projectRoot) {

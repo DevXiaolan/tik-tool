@@ -1,8 +1,8 @@
 const cors = require('koa2-cors')
-const CONFIG = require('../config/app')
-CONFIG.ALLOW_ORIGIN = CONFIG.ALLOW_ORIGIN || []
+
+process.env.ALLOW_ORIGIN = process.env.ALLOW_ORIGIN || []
 module.exports = cors({
-  origin: ctx => CONFIG.ALLOW_ORIGIN.includes(ctx.request.header.origin) ? ctx.request.header.origin: false,
+  origin: ctx => process.env.ALLOW_ORIGIN.includes(ctx.request.header.origin) ? ctx.request.header.origin: false,
   // origin:  "*",
   exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
   maxAge: 5,

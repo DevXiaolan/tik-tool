@@ -1,8 +1,8 @@
 
-const success = (ctx, data, code = 0, message = 'Success') => {
+const success = (ctx, data) => {
   ctx.body = {
-    code,
-    message,
+    code: 0,
+    message: 'success',
   }
   if (data) {
     ctx.body.data = data
@@ -10,8 +10,8 @@ const success = (ctx, data, code = 0, message = 'Success') => {
   ctx.set('trace-id', ctx.state.traceId)
 }
 
-const error = (ctx, err, option = {}) => {
-  let e = { ...err, ...option }
+const error = (ctx, err, cover = {}) => {
+  let e = { ...err, ...cover }
   let body = {
     code: (process.env['APP_ID'] || 1000) * 1e6 + (e.code || 0),
     message: e.message
@@ -21,6 +21,10 @@ const error = (ctx, err, option = {}) => {
   }
   ctx.body = body
   ctx.set('trace-id', ctx.state.traceId)
+  log.error({
+    ...e,
+    traceId: ctx.state.traceId
+  })
 }
 
 const middleware = async (ctx, next) => {
