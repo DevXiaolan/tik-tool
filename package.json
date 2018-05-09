@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "colors": "^1.2.4",
+    "dotenv": "^5.0.1",
     "readline-sync": "^1.4.9",
     "shelljs": "^0.8.1",
     "xiaolan-ast": "^1.3.67",

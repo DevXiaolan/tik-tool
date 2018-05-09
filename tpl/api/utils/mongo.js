@@ -1,5 +1,7 @@
 const mongoose = require('mongoose')
 
+const commonFields = require('./common_field')
+
 const CONFIG = {
   // 数据库
   NAME: process.env['MONGO_DBNAME'] || 'test',
@@ -15,6 +17,7 @@ const CONFIG = {
 
 mongoose.Promise = global.Promise
 
-mongoose.connect(`mongodb://${CONFIG.USERNAME ? `${CONFIG.USERNAME}:${CONFIG.PASSWORD}@` : ''}${CONFIG.HOST}:${CONFIG.PORT}/${CONFIG.NAME}`, { useMongoClient: true })
+mongoose.connect(`mongodb://${CONFIG.USERNAME ? `${CONFIG.USERNAME}:${CONFIG.PASSWORD}@` : ''}${CONFIG.HOST}:${CONFIG.PORT}/${CONFIG.NAME}`)
+
 
 module.exports = mongoose

@@ -7,6 +7,7 @@ const success = (ctx, data, code = 0, message = 'Success') => {
   if (data) {
     ctx.body.data = data
   }
+  ctx.set('trace-id', ctx.state.traceId)
 }
 
 const error = (ctx, err, option = {}) => {
@@ -19,9 +20,17 @@ const error = (ctx, err, option = {}) => {
     body.data = e.data
   }
   ctx.body = body
+  ctx.set('trace-id', ctx.state.traceId)
+}
+
+const middleware = async (ctx, next) => {
+  ctx.success = success
+  ctx.error = error
+  return await next()
 }
 
 module.exports = {
+  middleware,
   error,
   success
 }

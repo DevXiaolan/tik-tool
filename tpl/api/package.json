@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "description": "project template of api",
   "main": "index.js",
+  "private": true,
   "scripts": {
     "dev": "npx nodemon ./bin/boot.js",
     "start": "node ./bin/boot.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npx ava --verbose && exit 0"
   },
   "keywords": [],
   "author": "",
@@ -15,15 +16,20 @@
     "ava": "^0.25.0",
     "colors": "^1.2.3",
     "dotenv": "^5.0.1",
+    "ioredis": "^3.2.2",
     "koa": "^2.5.1",
     "koa-bodyparser": "^4.2.0",
     "koa-bouncer": "^6.0.4",
+    "koa-logger": "^3.2.0",
     "koa-onerror": "^4.0.0",
     "koa-router": "^7.4.0",
+    "koa2-cors": "^2.0.5",
+    "log4js": "^2.5.3",
     "mongoose": "^5.0.17",
     "nyc": "^11.7.1",
     "rightpad": "^1.0.1",
-    "superkoa": "^1.0.3"
+    "superkoa": "^1.0.3",
+    "uuid": "^3.2.1"
   },
   "devDependencies": {
     "nodemon": "^1.17.4"

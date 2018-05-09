@@ -1,10 +1,8 @@
-/**
- * Created by luowen on 2018/4/13
- */
-
-const redisConfig = require('../config/redis')
-
-const ioredis = require('ioredis').createClient(redisConfig)
+const ioredis = require('ioredis').createClient({
+  host: process.env.REDIS_HOST || '127.0.0.1',
+  port: process.env.REDIS_PORT || 6379,
+  db: process.env.REDIS_DB || 0
+})
 
 module.exports = ioredis
 

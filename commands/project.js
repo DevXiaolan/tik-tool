@@ -2,6 +2,7 @@ const fs = require('fs')
 const path = require('path')
 const shell = require('shelljs')
 const readline = require('readline-sync')
+const { EOL } = require('os')
 const Err = require('../utils/error_handler')
 const project = {}
 
@@ -27,11 +28,49 @@ project.create = (argv) => {
   }
 
 
-  let cmd = `mkdir ${root} && cp -R ${path.resolve(`${__dirname}/../tpl/${type}`)}/* ${root}`
+  let cmd = `mkdir ${root} && cp -a ${path.resolve(`${__dirname}/../tpl/${type}`)}/. ${root} `
   if (shell.exec(cmd).code !== 0) {
     Err(`Create Project Failed`)
     return
   }
+
+  if (shell.sed('-i', 'demo', projectName, `${root}/.env`).code !== 0) {
+    Err(`Init .env Failed`)
+    return
+  }
+}
+
+project.release = (argv) => {
+  let packageJson = require(`${process.cwd()}/package.json`);
+  console.log(`${EOL}Current version is ${packageJson.version.yellow}${EOL}`);
+  let select = versionSelect(packageJson.version);
+  let newVersion = readline.keyInSelect(select.name, 'You should know that what you are doing !');
+  if (newVersion !== -1) {
+    packageJson.version = select.arr[newVersion] || packageJson.version;
+    fs.writeFileSync(`${process.cwd()}/package.json`, JSON.stringify(packageJson, null, 2));
+    console.log('Done !'.green);
+  } else {
+    console.log('Cancel !'.yellow);
+  }
+}
+
+function versionSelect(version) {
+  let bits = version.split('.');
+  let patch = [bits[0], bits[1], bits[2] * 1 + 1].join('.');
+  let feature = [bits[0], bits[1] * 1 + 1, '0'].join('.');
+  let major = [bits[0] * 1 + 1, '0', '0'].join('.');
+  return {
+    arr: [
+      patch,
+      feature,
+      major,
+    ],
+    name: [
+      'patch:' + patch,
+      'feature:'.green + feature,
+      'major:'.red + major,
+    ],
+  };
 }
 
 module.exports = project

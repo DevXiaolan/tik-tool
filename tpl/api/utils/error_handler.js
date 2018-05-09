@@ -5,6 +5,8 @@ module.exports = async (ctx, next) => {
   try {
     return await next();
   } catch (err) {
+    
+    log.error(err.message)
     let errMsg = err.message
     if (err instanceof bouncer.ValidationError) {
       const { bouncer: { key, message } } = err

@@ -8,10 +8,12 @@ module.exports = function commonFiledPlugin(schema) {
     // 修改时间
     updatedAt: {
       type: Number,
+      default: Date.now()
     },
     // 删除时间
     deletedAt: {
-      type: Number
+      type: Number,
+      default: Date.now()
     },
     status: {
       type: Number,
@@ -24,5 +26,9 @@ module.exports = function commonFiledPlugin(schema) {
       type: Number,
       select: false
     }
+  })
+  schema.pre('save', function(next){
+    this.updatedAt = Date.now()
+    next()
   })
 }
