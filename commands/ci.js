@@ -52,6 +52,8 @@ const rancherCompose = (projectRoot) => {
   let tpl = `version: '2'
 services:
   ${env.APP_NAME}:
+    upgrade_strategy:
+      start_first: true
     scale: 2
     start_on_create: true`
   fs.writeFileSync(`${projectRoot}/rancher-compose.yml`, tpl)
@@ -99,4 +101,3 @@ function syncEnv(projectRoot) {
 module.exports = {
   init,
 }
-

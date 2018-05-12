@@ -38,16 +38,27 @@ project.create = (argv) => {
     Err(`Init .env Failed`)
     return
   }
+  if (shell.sed('-i', 'demo', projectName, `${root}/tik.json`).code !== 0) {
+    Err(`Init tik.json Failed`)
+    return
+  }
 }
 
 project.release = (argv) => {
-  let packageJson = require(`${process.cwd()}/package.json`);
-  console.log(`${EOL}Current version is ${packageJson.version.yellow}${EOL}`);
-  let select = versionSelect(packageJson.version);
+  let tikConfig = {
+    name: 'uknown',
+    version: '1.0.0',
+  }
+  if (fs.existsSync(`${process.cwd()}/tik.json`)){
+    tikConfig = require(`${process.cwd()}/tik.json`)
+  }
+  
+  console.log(`${EOL}Current version is ${tikConfig.version.yellow}${EOL}`);
+  let select = versionSelect(tikConfig.version);
   let newVersion = readline.keyInSelect(select.name, 'You should know that what you are doing !');
   if (newVersion !== -1) {
-    packageJson.version = select.arr[newVersion] || packageJson.version;
-    fs.writeFileSync(`${process.cwd()}/package.json`, JSON.stringify(packageJson, null, 2));
+    tikConfig.version = select.arr[newVersion] || tikConfig.version;
+    fs.writeFileSync(`${process.cwd()}/tik.json`, JSON.stringify(tikConfig, null, 2));
     console.log('Done !'.green);
   } else {
     console.log('Cancel !'.yellow);
