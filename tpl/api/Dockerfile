@@ -4,7 +4,7 @@ ADD package.json /app/
 
 WORKDIR /app
 
-RUN npm install
+RUN npm install --registry=https://registry.npm.taobao.org
 
 ADD . /app
 

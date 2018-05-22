@@ -29,6 +29,15 @@ switch (command) {
   case 'ci':
     ci.init()
     break
+    // 项目优化检查 tik opt
+  case 'opt':
+  const subCommand = argv._[1]
+  if (subCommand === undefined) {
+    require('./commands/optimization').dependence();
+  } else {
+    require('./commands/optimization').detail(subCommand);
+  }
+  break;
   // todo tik gen {xxx}
   case 'gen':
     break;

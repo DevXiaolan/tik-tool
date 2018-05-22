@@ -21,7 +21,7 @@ const init = (argv) => {
 const dockerCompose = (projectRoot) => {
   let env = dotenv.load({ path: `${projectRoot}/.env` }).parsed
 
-  let pkg = require(`${projectRoot}/package.json`)
+  let pkg = require(`${projectRoot}/tik.json`)
   let tpl =
     `version: '2'
 services:
@@ -62,10 +62,9 @@ services:
 
 const buildFile = (projectRoot) => {
   let env = dotenv.load({ path: `${projectRoot}/.env` }).parsed
-  let pkg = require(`${projectRoot}/package.json`)
+  let pkg = require(`${projectRoot}/tik.json`)
   
-  let tpl = `docker build -t ${env.APP_NAME}:${pkg.version} .
-docker rmi \`docker images -q -f dangling=true\``
+  let tpl = `docker build -t ${env.APP_NAME}:${pkg.version} .`
   fs.writeFileSync(`${projectRoot}/build`, tpl)
   shell.chmod('+x', `${projectRoot}/build`)
   console.log(`File generated: ${projectRoot}/build`.blue)
@@ -74,8 +73,8 @@ docker rmi \`docker images -q -f dangling=true\``
 
 const upgrade = (projectRoot) => {
   let env = dotenv.load({ path: `${projectRoot}/.env` }).parsed
-  let pkg = require(`${projectRoot}/package.json`)
-  let tpl = `rancher up -d  --pull --force-upgrade --confirm-upgrade --stack coins007-${env.APP_NAME}-${pkg.version}`
+  let pkg = require(`${projectRoot}/tik.json`)
+  let tpl = `rancher --url http://172.20.160.7:8080/v2-beta --access-key 3F9EAEABA64D4876F506 --secret-key vyg17c8244obWeB8HoSGeeHVg54LGdTWMVj4yU6V up -d  --pull --force-upgrade --confirm-upgrade --stack coins007-${env.APP_NAME}-${pkg.version}`
   fs.writeFileSync(`${projectRoot}/upgrade`, tpl)
   shell.chmod('+x', `${projectRoot}/upgrade`)
   console.log(`File generated: ${projectRoot}/upgrade`.blue)
