@@ -6,7 +6,7 @@ const index = async (ctx) => {
     message: 'error',
     traceId: ctx.state.traceId
   })
-  return response.success(ctx, 'hello')
+  return ctx.success('hello')
 }
 
 const p = async (ctx) => {
