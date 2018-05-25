@@ -1,5 +1,5 @@
 {
-  "name": "api-tpl",
+  "name": "demo",
   "version": "1.0.0",
   "description": "project template of api",
   "main": "index.js",
@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "app-module-path": "^2.2.0",
     "ava": "^0.25.0",
     "colors": "^1.2.3",
     "dotenv": "^5.0.1",
@@ -24,7 +25,7 @@
     "koa-onerror": "^4.0.0",
     "koa-router": "^7.4.0",
     "koa2-cors": "^2.0.5",
-    "log4js": "^2.5.3",
+    "log4js": "^2.7.0",
     "mongoose": "^5.0.17",
     "nyc": "^11.7.1",
     "rightpad": "^1.0.1",

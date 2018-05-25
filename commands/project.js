@@ -33,7 +33,10 @@ project.create = (argv) => {
     Err(`Create Project Failed`)
     return
   }
-
+  if (shell.sed('-i', 'demo', projectName, `${root}/package.json`).code !== 0) {
+    Err(`Init package.json Failed`)
+    return
+  }
   if (shell.sed('-i', 'demo', projectName, `${root}/.env`).code !== 0) {
     Err(`Init .env Failed`)
     return
@@ -63,6 +66,7 @@ project.release = (argv) => {
   } else {
     console.log('Cancel !'.yellow);
   }
+  
 }
 
 function versionSelect(version) {
