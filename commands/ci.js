@@ -120,6 +120,8 @@ job_build_release:
     - /^release.*$/
   script:
     - docker build -t ${pkg.name}:${pkg.version} .
+    - docker tag ${pkg.name}:${pkg.version} hub.tik:5000/${pkg.name}:${pkg.version}
+    - docker push hub.tik:5000/${pkg.name}:${pkg.version}
 
 job_deploy:
   stage: deploy
