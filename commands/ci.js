@@ -24,7 +24,7 @@ const dockerCompose = (projectRoot) => {
     `version: '2'
 services:
   ${pkg.name || ''}:
-    image: ${pkg.name}:${pkg.version}
+    image: ${pkg.name}:latest
     environment:
 ${(env => {
       let output = ``
