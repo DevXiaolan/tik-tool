@@ -20,6 +20,7 @@ const init = (argv) => {
 const dockerCompose = (projectRoot) => {
   const env = dotenv.load({ path: `${projectRoot}/.env` }).parsed
   const pkg = require(`${projectRoot}/tik.json`)
+  pkg.name = formatName(pkg.name)
   const tpl =
     `version: '2'
 services:
@@ -47,6 +48,7 @@ ${(env => {
 
 const rancherCompose = (projectRoot) => {
   const pkg = require(`${projectRoot}/tik.json`)
+  pkg.name = formatName(pkg.name)
   const tpl = `version: '2'
 services:
   ${pkg.name}:
@@ -62,6 +64,7 @@ services:
  */
 const buildFile = (projectRoot) => {
   const pkg = require(`${projectRoot}/tik.json`)
+  pkg.name = formatName(pkg.name)
   const tpl = `docker build -t ${pkg.name}:${pkg.version} .`
   fs.writeFileSync(`${projectRoot}/build`, tpl)
   shell.chmod('+x', `${projectRoot}/build`)
@@ -73,6 +76,7 @@ const buildFile = (projectRoot) => {
  */
 const upgrade = (projectRoot) => {
   const pkg = require(`${projectRoot}/tik.json`)
+  pkg.name = formatName(pkg.name)
   const tpl = `rancher --url http://172.20.160.7:8080/v2-beta --access-key 3F9EAEABA64D4876F506 --secret-key vyg17c8244obWeB8HoSGeeHVg54LGdTWMVj4yU6V up -d  --pull --force-upgrade --confirm-upgrade --stack coins007-${pkg.name}-${pkg.version}`
   fs.writeFileSync(`${projectRoot}/upgrade`, tpl)
   shell.chmod('+x', `${projectRoot}/upgrade`)
@@ -82,6 +86,7 @@ const upgrade = (projectRoot) => {
 const gitlabCI = (projectRoot) => {
   const env = dotenv.load({ path: `${projectRoot}/.env` }).parsed
   const pkg = require(`${projectRoot}/tik.json`)
+  pkg.name = formatName(pkg.name)
   const tpl = `cache:
   untracked: true
   key: \${CI_COMMIT_REF_SLUG}
@@ -148,9 +153,13 @@ function syncEnv(projectRoot) {
       envExample.push(kv[0])
       continue
     }
-    envExample.push(kv[0] + '=')
+    envExample.push(kv[0] + '=' + kv[1])
   }
   fs.writeFileSync(`${process.cwd()}/.env.example`, envExample.join(EOL))
+}
+
+function formatName(name) {
+  return name.toString().toLowerCase()
 }
 
 module.exports = {
