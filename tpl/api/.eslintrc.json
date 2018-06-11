@@ -1,0 +1,86 @@
+{
+    "env": {
+      "es6": true,
+      "node": true
+    },
+    "extends": "eslint:recommended",
+    "parserOptions": {
+      "ecmaVersion": 8,
+      "ecmaFeatures": {
+        "experimentalObjectRestSpread": true
+      }
+    },
+    "rules": {
+      "indent": [
+        "error",
+        2
+      ],
+      "linebreak-style": [
+        "error",
+        "unix"
+      ],
+      "quotes": [
+        "error",
+        "single"
+      ],
+      "semi": [
+        "error",
+        "never"
+      ],
+      "no-console": [
+        "warn"
+      ],
+      "class-methods-use-this": [
+        "error"
+      ],
+      "consistent-return": [
+        "error"
+      ],
+      "curly": [
+        "error",
+        "all"
+      ],
+      "dot-notation": [
+        "error"
+      ],
+      "eqeqeq": [
+        "error"
+      ],
+      "no-eval": [
+        "error"
+      ],
+      "no-floating-decimal": [
+        "error"
+      ],
+      "no-magic-numbers": [
+        "error",
+        {
+          "ignore": [
+            0,
+            1
+          ],
+          "ignoreArrayIndexes": true,
+          "enforceConst": true
+        }
+      ],
+      "no-return-assign": [
+        "error"
+      ],
+      "no-warning-comments": [
+        "error",
+        {
+          "terms": [
+            "todo",
+            "fixme"
+          ],
+          "location": "anywhere"
+        }
+      ],
+      "no-unused-vars": [
+        "off"
+      ],
+      "no-undef": [
+        "off"
+      ]
+    }
+  }

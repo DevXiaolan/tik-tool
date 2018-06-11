@@ -25,7 +25,7 @@ const dockerCompose = (projectRoot) => {
     `version: '2'
 services:
   ${pkg.name || ''}:
-    image: ${pkg.name}:latest
+    image: ${pkg.name}:\${CI_COMMIT_REF_SLUG}
     environment:
 ${(env => {
       let output = ``
@@ -110,13 +110,13 @@ ${(env => {
       return output
     })(env)}
 
-job_build_latest:
+job_build_current:
   stage: build
   image: gitlab/dind
-  only:
-    - master
+  except:
+    - /^release.*$/
   script:
-    - docker build -t ${pkg.name}:latest .
+    - docker build -t ${pkg.name}:\${CI_COMMIT_REF_SLUG} .
   
 job_build_release:
   stage: build
@@ -135,7 +135,7 @@ job_deploy:
     - master
   script:
     - rm -f ~/.rancher/cli.json
-    - rancher --url http://172.20.160.7:8080/v2-beta --access-key 3F9EAEABA64D4876F506 --secret-key vyg17c8244obWeB8HoSGeeHVg54LGdTWMVj4yU6V up -d  --pull --force-upgrade --confirm-upgrade --stack coins007-${pkg.name}-${pkg.version}`
+    - rancher --url http://172.20.160.7:8080/v2-beta --access-key 3F9EAEABA64D4876F506 --secret-key vyg17c8244obWeB8HoSGeeHVg54LGdTWMVj4yU6V up -d  --pull --force-upgrade --confirm-upgrade --stack ${pkg.group}`
 
   fs.writeFileSync(`${projectRoot}/.gitlab-ci.yml`, tpl)
   console.log(`File generated: ${projectRoot}/.gitlab-ci.yml`.blue)

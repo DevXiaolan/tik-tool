@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
-const yargs = require('yargs');
-const colors = require('colors');
-const { EOL } = require('os');
+const yargs = require('yargs')
+const colors = require('colors')
+const { EOL } = require('os')
 const { help, project, ci } = require('./commands')
 
 let argv = yargs
@@ -29,18 +29,19 @@ switch (command) {
   case 'ci':
     ci.init()
     break
-    // 项目优化检查 tik opt
+  // 项目优化检查 tik opt
   case 'opt':
-  const subCommand = argv._[1]
-  if (subCommand === undefined) {
-    require('./commands/optimization').dependence();
-  } else {
-    require('./commands/optimization').detail(subCommand);
-  }
-  break;
+    const subCommand = argv._[1]
+    if (subCommand === undefined) {
+      require('./commands/optimization').dependence()
+    } else {
+      require('./commands/optimization').detail(subCommand)
+    }
+    break
   // todo tik gen {xxx}
   case 'gen':
-    break;
+    
+    break
   default:
     break
 }

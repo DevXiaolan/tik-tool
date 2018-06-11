@@ -11,10 +11,10 @@ test.cb('demo', t => {
     .expect('Content-Type', /json/)
     .expect(200, (err, res) => {
       t.ifError(err)
-      if (res.body.code !== 0) {
-        throw new Error(JSON.stringify(res.body))
+      if (res.body.code !== 0) { 
+        throw new Error(JSON.stringify(res.body)) 
       }
-      //more cases
       t.end()
     })
 })
+
