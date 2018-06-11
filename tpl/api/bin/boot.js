@@ -1,5 +1,9 @@
 let { EOL } = require('os')
 let conf = require('dotenv').load()
+
+if (conf.parsed.APP_ID === '') {
+  throw new Error(' APP_ID not configured!')
+}
 /* eslint-disable */
 console.log(EOL + '============CONFIG============')
 for (let k in process.env) {

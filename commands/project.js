@@ -33,15 +33,15 @@ project.create = (argv) => {
     Err(`Create Project Failed`)
     return
   }
-  if (shell.sed('-i', 'demo', projectName, `${root}/package.json`).code !== 0) {
+  if (shell.sed('-i', 'tik-tik', projectName, `${root}/package.json`).code !== 0) {
     Err(`Init package.json Failed`)
     return
   }
-  if (shell.sed('-i', 'demo', projectName, `${root}/.env`).code !== 0) {
+  if (shell.sed('-i', 'tik-tik', projectName, `${root}/.env`).code !== 0) {
     Err(`Init .env Failed`)
     return
   }
-  if (shell.sed('-i', 'demo', projectName, `${root}/tik.json`).code !== 0) {
+  if (shell.sed('-i', 'tik-tik', projectName, `${root}/tik.json`).code !== 0) {
     Err(`Init tik.json Failed`)
     return
   }

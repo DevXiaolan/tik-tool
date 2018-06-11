@@ -8,10 +8,18 @@ const Err = require('../utils/error_handler')
 const init = (argv) => {
   const projectRoot = process.cwd()
   if (fs.existsSync(`${projectRoot}/tik.json`) && fs.existsSync(`${projectRoot}/.env`)) {
-    dockerCompose(projectRoot)
-    rancherCompose(projectRoot)
     syncEnv(projectRoot)
     gitlabCI(projectRoot)
+  } else {
+    Err(`Project Root Invalid: ${projectRoot}`)
+  }
+}
+
+const docker = (argv) => {
+  const projectRoot = process.cwd()
+  if (fs.existsSync(`${projectRoot}/tik.json`) && fs.existsSync(`${projectRoot}/.env`)) {
+    dockerCompose(projectRoot)
+    rancherCompose(projectRoot)
   } else {
     Err(`Project Root Invalid: ${projectRoot}`)
   }
@@ -25,7 +33,7 @@ const dockerCompose = (projectRoot) => {
     `version: '2'
 services:
   ${pkg.name || ''}:
-    image: ${pkg.name}:\${CI_COMMIT_REF_SLUG}
+    image: ${pkg.name}:stable
     environment:
 ${(env => {
       let output = ``
@@ -42,6 +50,7 @@ ${(env => {
     - /tmp:/tmp
     tty: true
 `
+//todo 后续要自动识别服务依赖 加到 external_links
   fs.writeFileSync(`${projectRoot}/docker-compose.yml`, tpl)
   console.log(`File generated: ${projectRoot}/docker-compose.yml`.blue)
 }
@@ -59,29 +68,7 @@ services:
   fs.writeFileSync(`${projectRoot}/rancher-compose.yml`, tpl)
   console.log(`File generated: ${projectRoot}/rancher-compose.yml`.blue)
 }
-/**
- * out of date
- */
-const buildFile = (projectRoot) => {
-  const pkg = require(`${projectRoot}/tik.json`)
-  pkg.name = formatName(pkg.name)
-  const tpl = `docker build -t ${pkg.name}:${pkg.version} .`
-  fs.writeFileSync(`${projectRoot}/build`, tpl)
-  shell.chmod('+x', `${projectRoot}/build`)
-  console.log(`File generated: ${projectRoot}/build`.blue)
-}
 
-/**
- * out of date
- */
-const upgrade = (projectRoot) => {
-  const pkg = require(`${projectRoot}/tik.json`)
-  pkg.name = formatName(pkg.name)
-  const tpl = `rancher --url http://172.20.160.7:8080/v2-beta --access-key 3F9EAEABA64D4876F506 --secret-key vyg17c8244obWeB8HoSGeeHVg54LGdTWMVj4yU6V up -d  --pull --force-upgrade --confirm-upgrade --stack coins007-${pkg.name}-${pkg.version}`
-  fs.writeFileSync(`${projectRoot}/upgrade`, tpl)
-  shell.chmod('+x', `${projectRoot}/upgrade`)
-  console.log(`File generated: ${projectRoot}/upgrade`.blue)
-}
 
 const gitlabCI = (projectRoot) => {
   const env = dotenv.load({ path: `${projectRoot}/.env` }).parsed
@@ -97,10 +84,12 @@ stages:
 
 job_test:
   stage: test
-  image: node:9.11.1
+  image: hub.tik:5000/node:tik
   script: 
     - npm install --registry=https://registry.npm.taobao.org
     - npm test
+    - cp .env.example .env
+    - tik docker
   variables:
 ${(env => {
       let output = ``
@@ -110,13 +99,13 @@ ${(env => {
       return output
     })(env)}
 
-job_build_current:
+job_build_stable:
   stage: build
   image: gitlab/dind
-  except:
-    - /^release.*$/
+  only:
+    - master
   script:
-    - docker build -t ${pkg.name}:\${CI_COMMIT_REF_SLUG} .
+    - docker build -t ${pkg.name}:stable .
   
 job_build_release:
   stage: build
@@ -135,7 +124,7 @@ job_deploy:
     - master
   script:
     - rm -f ~/.rancher/cli.json
-    - rancher --url http://172.20.160.7:8080/v2-beta --access-key 3F9EAEABA64D4876F506 --secret-key vyg17c8244obWeB8HoSGeeHVg54LGdTWMVj4yU6V up -d  --pull --force-upgrade --confirm-upgrade --stack ${pkg.group}`
+    - rancher --url http://172.20.160.7:8080/v2-beta --access-key 3F9EAEABA64D4876F506 --secret-key vyg17c8244obWeB8HoSGeeHVg54LGdTWMVj4yU6V up -d  --pull --force-upgrade --confirm-upgrade --stack ${pkg.group}-${pkg.name}-${pkg.version}`
 
   fs.writeFileSync(`${projectRoot}/.gitlab-ci.yml`, tpl)
   console.log(`File generated: ${projectRoot}/.gitlab-ci.yml`.blue)
@@ -164,4 +153,5 @@ function formatName(name) {
 
 module.exports = {
   init,
+  docker,
 }

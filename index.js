@@ -29,6 +29,10 @@ switch (command) {
   case 'ci':
     ci.init()
     break
+  // 生成docker相关配置 tik docker
+  case 'docker':
+    ci.docker()
+    break
   // 项目优化检查 tik opt
   case 'opt':
     const subCommand = argv._[1]
@@ -40,7 +44,7 @@ switch (command) {
     break
   // todo tik gen {xxx}
   case 'gen':
-    
+
     break
   default:
     break
