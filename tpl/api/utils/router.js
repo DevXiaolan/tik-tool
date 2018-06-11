@@ -17,6 +17,7 @@ const colorMap = {
 
 
 module.exports = (app) => {
+  /* eslint-disable */
   const basePath = path.resolve(`${__dirname}/../src`)
 
   if (fs.existsSync(`${basePath}/error.js`)) {
@@ -35,4 +36,5 @@ module.exports = (app) => {
   app.use(router.routes(), router.allowedMethods())
 
   console.log('==============================')
+  /* eslint-enable */
 }

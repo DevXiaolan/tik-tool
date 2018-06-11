@@ -10,17 +10,6 @@ module.exports = function commonFiledPlugin(schema) {
       type: Number,
       default: Date.now()
     },
-    // 删除时间
-    deletedAt: {
-      type: Number,
-      default: Date.now()
-    },
-    status: {
-      type: Number,
-      // -1 删除，0 无效， 1有效
-      default: 1,
-      enum: [-1, 0, 1]
-    },
     // 去掉__v
     __v: {
       type: Number,

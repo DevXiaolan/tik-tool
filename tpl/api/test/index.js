@@ -1,3 +1,4 @@
+/* eslint-disable */
 require('dotenv').load('../.env')
 const app = require('../app')
 const { test } = require('ava')
@@ -18,3 +19,4 @@ test.cb('demo', t => {
     })
 })
 
+/* eslint-enable */

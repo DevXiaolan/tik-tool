@@ -1,3 +1,8 @@
+const DEFAULT_APP_ID = 1000
+//appid 默认偏移
+const BASE = 1e6
+
+const DEFAULT_ERROR_CODE = 0
 
 const success = (ctx, data) => {
   ctx.body = {
@@ -21,7 +26,7 @@ const error = (ctx, err) => {
   let e = err
 
   let body = {
-    code: (process.env['APP_ID'] || 1000) * 1e6 + (e.code || 0),
+    code: (process.env.APP_ID || DEFAULT_APP_ID) * BASE + (e.code || DEFAULT_ERROR_CODE),
     message: e.message
   }
   if (e.data) {

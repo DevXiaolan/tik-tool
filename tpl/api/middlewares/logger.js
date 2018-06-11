@@ -1,7 +1,7 @@
 const log4js = require('../utils/logger')
 
 module.exports = async (ctx, next) => {
-  const logger = log4js.getLogger(process.env['LOGGER'] || 'daily')
+  const logger = log4js.getLogger(process.env.LOGGER || 'daily')
   ctx.logger = {
     info: (data) => {
       logger.info({ data, traceId: ctx.state.traceId })
