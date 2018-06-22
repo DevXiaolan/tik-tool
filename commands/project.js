@@ -20,7 +20,7 @@ project.create = (argv) => {
     return
   }
   //todo 检验名字合法性
-  let items = ['api', 'cronjob']
+  let items = ['api', 'cronjob', 'web']
   let type = items[readline.keyInSelect(items, 'Project Type:')]
   if (!type) {
     console.log('DO NOTING!'.yellow)
@@ -80,6 +80,18 @@ project.release = (argv) => {
   } else {
     console.log('Cancel !'.yellow)
   }
+}
+
+project.config = (argv) => {
+  let tikConfig
+
+  if (fs.existsSync(`${process.cwd()}/tik.json`)) {
+    tikConfig = require(`${process.cwd()}/tik.json`)
+  }
+  const group = readline.question(`Gitlab Group   (current: ${tikConfig.group || ''})`, { defaultInput: tikConfig.group })
+  const name = readline.question(`Repos Name   (current: ${tikConfig.name || ''})`, { defaultInput: tikConfig.name })
+  const version = readline.question(`Version   (current: ${tikConfig.version || '1.0.0'})`, { defaultInput: tikConfig.version })
+  fs.writeFileSync(`${process.cwd()}/tik.json`, JSON.stringify({ group, name, version }, null, 2))
 }
 
 function versionSelect(version) {

@@ -1,0 +1,32 @@
+{
+    "GOOG": {
+        "name": "Google",
+        "code": "GOOG",
+        "type": "US"
+    },
+    "AMZN": {
+        "name": "Amazon",
+        "code": "AMZN",
+        "type": "US"
+    },
+    "FB": {
+        "name": "FaceBook",
+        "code": "FB",
+        "type": "US"
+    },
+    "TENCENT": {
+        "name": "tencent",
+        "code": "TENCENT",
+        "type": "HK"
+    },
+    "BABA": {
+        "name": "Alibaba",
+        "code": "BABA",
+        "type": "US"
+    },
+    "VOO": {
+        "name":"标普500 ETF",
+        "code":"VOO",
+        "type":"US"
+    }
+}

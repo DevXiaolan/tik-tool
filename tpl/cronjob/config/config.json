@@ -1,0 +1,6 @@
+{
+    "HOST_DATA_BLOCK": "http://data.block.cc",
+    "HOST_BLOCK": "http://block.cc",
+    "PATH_BLOCK_CC_RATES": "/api/v1/exrate?base=CNY",
+    "STOCK_RESOURCE": "https://api.hox.com/v1/ticket/search"
+}

@@ -1,0 +1,6 @@
+{
+  "name": "tik-crawler",
+  "group": "tikcoin",
+  "version": "1.0.0",
+  "type": "cronjob"
+}

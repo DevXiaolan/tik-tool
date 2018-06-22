@@ -1,0 +1,61 @@
+cache:
+  untracked: true
+  key: ${CI_COMMIT_REF_SLUG}
+stages:
+  - test
+  - build
+  - deploy
+
+job_test:
+  stage: test
+  image: hub.tik:5000/node:tik
+  script: 
+    - npm install --registry=https://registry.npm.taobao.org
+    - npm test
+    - cp .env.example .env
+    - tik docker
+  variables:
+    APP_NAME: tik-crawler-new
+    APP_ID: 1004
+    API_PORT: 3004
+    NODE_ENV: development
+    LOGGER: daily
+    LOG_PATH: /tmp
+    MONGO_HOST: 172.20.160.7
+    MONGO_PORT: 27017
+    MONGO_DBNAME: tikcoin
+    MONGO_USER: ""
+    MONGO_PASSWORD: ""
+    REDIS_HOST: 172.20.160.7
+    REDIS_PORT: 6379
+    REDIS_DB: 3
+    UCENTER_HOST: http://172.20.160.7:30082
+    EXPIRE_TIME: 600000
+
+
+job_build_stable:
+  stage: build
+  image: gitlab/dind
+  only:
+    - master
+  script:
+    - docker build -t tik-crawler:stable .
+  
+job_build_release:
+  stage: build
+  image: gitlab/dind
+  only:
+    - /^release.*$/
+  script:
+    - docker build -t tik-crawler:1.0.0 .
+    - docker tag tik-crawler:1.0.0 hub.tik:5000/tik-crawler:1.0.0
+    - docker push hub.tik:5000/tik-crawler:1.0.0
+
+job_deploy:
+  stage: deploy
+  image: registry.cn-hangzhou.aliyuncs.com/dev_tool/rancher-cli
+  only:
+    - master
+  script:
+    - rm -f ~/.rancher/cli.json
+    - rancher --url http://172.20.160.7:8080/v2-beta --access-key 3F9EAEABA64D4876F506 --secret-key vyg17c8244obWeB8HoSGeeHVg54LGdTWMVj4yU6V up -d  --pull --force-upgrade --confirm-upgrade --stack tikcoin-tik-crawler-1.0.0
