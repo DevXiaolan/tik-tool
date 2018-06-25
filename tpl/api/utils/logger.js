@@ -1,10 +1,10 @@
-const { EOL, hostname } = require('os')
+const { hostname } = require('os')
 const log4js = require('log4js')
 
 log4js.addLayout('json', function (config) {
   return function (logEvent) {
     return JSON.stringify({
-      app: process.env.APP_NAME || 'unnamed',
+      app: process.env.APP_NAME,
       time: logEvent.startTime,
       level: logEvent.level.levelStr,
       data: logEvent.data[0],
@@ -21,7 +21,7 @@ log4js.configure({
       layout: {
         type: 'json'
       },
-      filename: `${process.env.LOG_PATH || '/tmp'}/${process.env.APP_NAME || 'unnamed'}`,
+      filename: `${process.env.LOG_PATH}/${process.env.APP_NAME}`,
       pattern: '.yyyy-MM-dd.log',
       alwaysIncludePattern: true,
       compress: true

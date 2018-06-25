@@ -1,28 +1,20 @@
 const mongoose = require('mongoose')
 
-const commonFields = require('./common_field')
-
-const DEFAULT_HOST = '127.0.0.1'
-
-const DEFAULT_PORT = 27017
-
-const DEFAULT_DB = 'test'
-
 const CONFIG = {
   // 数据库
-  NAME: process.env.MONGO_DBNAME || DEFAULT_DB,
+  NAME: process.env.MONGO_DBNAME,
   // 用户名 (无用户名为空字符串)
-  USERNAME: process.env.MONGO_USER || '',
+  USERNAME: process.env.MONGO_USER,
   // 密码 (无用户名为空字符串)
-  PASSWORD: process.env.MONGO_PASSWORD || '',
+  PASSWORD: process.env.MONGO_PASSWORD,
   // host
-  HOST: process.env.MONGO_HOST || DEFAULT_HOST,
+  HOST: process.env.MONGO_HOST,
   // 端口
-  PORT: process.env.MONGO_PORT || DEFAULT_PORT,
+  PORT: process.env.MONGO_PORT,
 }
 
 mongoose.Promise = global.Promise
 
-mongoose.connect(`mongodb://${CONFIG.USERNAME ? `${CONFIG.USERNAME}:${CONFIG.PASSWORD}@` : ''}${CONFIG.HOST}:${CONFIG.PORT}/${CONFIG.NAME}`)
+mongoose.connect(`mongodb://${CONFIG.HOST}:${CONFIG.PORT}/${CONFIG.NAME}`)
 
 module.exports = mongoose

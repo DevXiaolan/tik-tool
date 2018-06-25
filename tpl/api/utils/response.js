@@ -9,9 +9,7 @@ const success = (ctx, data) => {
     code: 0,
     message: 'success',
   }
-  if (data) {
-    ctx.body.data = data
-  }
+  ctx.body.data = data
   ctx.set('trace-id', ctx.state.traceId)
 }
 
@@ -29,9 +27,9 @@ const error = (ctx, err) => {
     code: (process.env.APP_ID || DEFAULT_APP_ID) * BASE + (e.code || DEFAULT_ERROR_CODE),
     message: e.message
   }
-  if (e.data) {
-    body.data = e.data
-  }
+  
+  body.data = e.data
+  
   ctx.body = body
   ctx.set('trace-id', ctx.state.traceId)
   ctx.logger.error({
@@ -40,14 +38,8 @@ const error = (ctx, err) => {
   })
 }
 
-const middleware = async (ctx, next) => {
-  ctx.success = success
-  ctx.error = error
-  return await next()
-}
 
 module.exports = {
-  middleware,
   error,
   success
 }
