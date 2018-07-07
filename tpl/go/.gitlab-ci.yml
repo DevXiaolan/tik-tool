@@ -1,0 +1,51 @@
+cache:
+  untracked: true
+  key: ${CI_COMMIT_REF_SLUG}
+
+stages:
+  - test
+  - go
+  - docker
+  - deploy
+
+job_build_deps:
+  stage: go
+  image: golang:1.10.3
+  only:
+    - master
+    - /^release.*$/
+  script:
+    - git clone http://Administrator:JsL5emqymYF6zsMVdkk2@172.20.160.7:10080/tik-go/core.git /go/src/tik-go/core --config core.autocrlf=input
+    - rm -fr /go/src/{APP_GROUP}/{APP_NAME} && mkdir /go/src/{APP_GROUP}/{APP_NAME}
+    - cp -R ./* /go/src/{APP_GROUP}/{APP_NAME}
+    - cd /go/src/{APP_GROUP}/{APP_NAME}
+    - go build -o /builds/{APP_GROUP}/{APP_NAME}/goapp
+  
+       
+
+job_build_stable:
+  stage: docker
+  image: gitlab/dind
+  only:
+    - master
+  script:
+    - docker build -t {APP_NAME}:stable .
+  
+job_build_release:
+  stage: docker
+  image: gitlab/dind
+  only:
+    - /^release.*$/
+  script:
+    - docker build -t {APP_NAME}:1.0.0 .
+    - docker tag {APP_NAME}:1.0.0 hub.tik:5000/{APP_NAME}:1.0.0
+    - docker push hub.tik:5000/{APP_NAME}:1.0.0
+
+job_deploy:
+  stage: deploy
+  image: registry.cn-hangzhou.aliyuncs.com/dev_tool/rancher-cli
+  only:
+    - master
+  script:
+    - rm -f ~/.rancher/cli.json
+    - rancher --url http://172.20.160.7:8080/v2-beta --access-key 3F9EAEABA64D4876F506 --secret-key vyg17c8244obWeB8HoSGeeHVg54LGdTWMVj4yU6V up -d  --pull --force-upgrade --confirm-upgrade --stack {APP_GROUP}-{APP_NAME}-1.0.0

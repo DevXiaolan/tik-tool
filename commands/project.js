@@ -1,44 +1,63 @@
 const fs = require('fs')
 const path = require('path')
 const shell = require('shelljs')
-const readline = require('readline-sync')
 const { EOL } = require('os')
 const Err = require('../utils/error_handler')
 const project = {}
 const colors = require('colors')
+const readline = require('readline-sync')
+
 project.create = (argv) => {
-  const projectName = argv._[1]
-
-  if (!projectName) {
-    Err('Project Name Required!')
-    return
+  let projectName = ''
+  let group = ''
+  let appId = 0
+  while (!projectName) {
+    projectName = readline.question('Project Name?'.yellow)
+  }
+  while (!group) {
+    group = readline.question('Group Name?'.yellow)
+  }
+  while (!appId) {
+    appId = readline.question('AppId?'.yellow)
   }
 
-  const root = `${process.cwd()}/${projectName}`
-  if (fs.existsSync(root)) {
-    Err(`Directory [ ${root} ] has already exists`)
-    return
-  }
-  //todo 检验名字合法性
-  const items = ['node', 'cronjob', 'web']
+
+  const items = ['node', 'cronjob', 'web', 'go']
   const type = items[readline.keyInSelect(items, 'Project Type:')]
   if (!type) {
     console.log('DO NOTING!'.yellow)
     process.exit()
   }
 
+  let root = `${process.cwd()}/${projectName}`
+  if (type === 'go') {
+    root = `${process.env.GOPATH}/src/${group}/${projectName}`
+  }
+  if (fs.existsSync(root)) {
+    Err(`Directory [ ${root} ] has already exists`)
+    return
+  }
 
+  //赋值内容
   const cmd = `mkdir ${root} && cp -a ${path.resolve(`${__dirname}/../tpl/${type}`)}/. ${root} `
   if (shell.exec(cmd).code !== 0) {
     Err(`Create Project Failed`)
     return
   }
-  if (shell.sed('-i', 'tik-tik', projectName, `${root}/package.json`).code !== 0) {
-    Err(`Init package.json Failed`)
-    return
+
+  //如果有package.json 修改一下占位符
+  if (fs.existsSync(`${root}/package.json`)) {
+    if (shell.sed('-i', '{name}', projectName, `${root}/package.json`).code !== 0) {
+      Err(`Init package.json Failed`)
+      return
+    }
   }
 
-  if (shell.sed('-i', 'tik-tik', projectName, `${root}/.env.example`).code !== 0) {
+  if (shell.sed('-i', '{name}', projectName, `${root}/.env.example`).code !== 0) {
+    Err(`Init .env.example Failed`)
+    return
+  }
+  if (shell.sed('-i', '{appId}', appId, `${root}/.env.example`).code !== 0) {
     Err(`Init .env.example Failed`)
     return
   }
@@ -47,9 +66,32 @@ project.create = (argv) => {
     Err(`Init .env Failed`)
     return
   }
-  if (shell.sed('-i', 'tik-tik', projectName, `${root}/tik.json`).code !== 0) {
+
+  if (shell.sed('-i', '{name}', projectName, `${root}/tik.json`).code !== 0) {
     Err(`Init tik.json Failed`)
     return
+  }
+  if (shell.sed('-i', '{appId}', appId, `${root}/tik.json`).code !== 0) {
+    Err(`Init tik.json Failed`)
+    return
+  }
+  if (shell.sed('-i', '{type}', type, `${root}/tik.json`).code !== 0) {
+    Err(`Init tik.json Failed`)
+    return
+  }
+  if (shell.sed('-i', '{group}', group, `${root}/tik.json`).code !== 0) {
+    Err(`Init tik.json Failed`)
+    return
+  }
+  if (type === 'go'){
+    if (shell.sed('-i', '{group}', group, `${root}/main.go`).code !== 0) {
+      Err(`Init main.go Failed`)
+      return
+    }
+    if (shell.sed('-i', '{name}', projectName, `${root}/main.go`).code !== 0) {
+      Err(`Init main.go Failed`)
+      return
+    }
   }
 }
 

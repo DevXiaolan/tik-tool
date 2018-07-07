@@ -1,0 +1,14 @@
+version: '2'
+services:
+  {APP_NAME}:
+    image: {APP_NAME}:stable
+    environment:
+      APP_ID: {APP_ID}
+      APP_NAME: {APP_NAME}
+
+    stdin_open: true
+    external_links:
+    - database/redis:redis
+    volumes:
+    - /tmp:/tmp
+    tty: true

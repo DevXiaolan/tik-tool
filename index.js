@@ -17,7 +17,7 @@ if (argv.h === true || argv.help === true) {
 const command = argv._[0]
 
 switch (command) {
-  // 创建项目 tik create {projectname}
+  // 创建项目 tik create
   case 'create':
     project.create(argv)
     break

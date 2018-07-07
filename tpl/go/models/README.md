@@ -1,0 +1,1 @@
+### tik-go gen method {ModelName}

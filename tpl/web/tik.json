@@ -1,6 +1,7 @@
 {
-  "group":"tikcoin",
-  "type":"web",
-  "name":"tikbackweb",
-  "version":"1.0.0"
+  "appId":{appId},
+  "type":"{type}",
+  "name": "{name}",
+  "group": "{group}",
+  "version": "1.0.0"
 }

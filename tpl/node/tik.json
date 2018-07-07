@@ -1,6 +1,7 @@
 {
-  "type":"node",
-  "name": "tik-tik",
-  "group": "",
+  "appId":{appId},
+  "type":"{type}",
+  "name": "{name}",
+  "group": "{group}",
   "version": "1.0.0"
 }

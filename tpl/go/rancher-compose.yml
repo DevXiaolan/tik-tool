@@ -1,0 +1,7 @@
+version: '2'
+services:
+  {APP_NAME}:
+    upgrade_strategy:
+      start_first: true
+    scale: 1
+    start_on_create: true
