@@ -14,7 +14,7 @@ const success = (ctx, data) => {
 }
 
 const error = (ctx, err) => {
-  if(err instanceof Error){
+  if (err instanceof Error) {
     err = {
       code: 500000,
       message: err.name + ':' + err.message,
@@ -24,12 +24,11 @@ const error = (ctx, err) => {
   let e = err
 
   let body = {
-    code: (process.env.APP_ID || DEFAULT_APP_ID) * BASE + (e.code || DEFAULT_ERROR_CODE),
+    code: (process.env.APP_ID || DEFAULT_APP_ID) * BASE + (1 * e.code || DEFAULT_ERROR_CODE),
     message: e.message
   }
-  
   body.data = e.data
-  
+
   ctx.body = body
   ctx.set('trace-id', ctx.state.traceId)
   ctx.logger.error({

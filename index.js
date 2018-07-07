@@ -5,7 +5,7 @@ const colors = require('colors')
 const { EOL } = require('os')
 const { help, project, ci } = require('./commands')
 
-let argv = yargs
+const argv = yargs
   .epilog('Power by TIK'.green)
   .argv
 
@@ -14,7 +14,7 @@ if (argv.h === true || argv.help === true) {
   process.exit(0)
 }
 
-let command = argv._[0]
+const command = argv._[0]
 
 switch (command) {
   // 创建项目 tik create {projectname}

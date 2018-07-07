@@ -1,5 +1,6 @@
 /* eslint-disable */
 require('dotenv').load('../.env')
+process.env.MONGO_DBNAME = 'tikcoin_test'
 const app = require('../app')
 const { test } = require('ava')
 const superkoa = require('superkoa')

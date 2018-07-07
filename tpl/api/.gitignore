@@ -1,7 +1,0 @@
-./node_modules
-.env
-./utils
-./bin
-./config
-./middlewares
-./app.js
