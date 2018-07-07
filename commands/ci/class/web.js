@@ -1,7 +1,7 @@
 const dotenv = require('dotenv')
 const { EOL } = require('os')
 const fs = require('fs')
-
+const Err = require('../../../utils/error_handler')
 const { formatName } = require('../../../utils/func')
 const Base = require('./base')
 
@@ -73,7 +73,7 @@ job_deploy:
 
   docker() {
     const projectRoot = process.cwd()
-    if (fs.existsSync(`${projectRoot}/tik.json`) && fs.existsSync(`${projectRoot}/.env`)) {
+    if (fs.existsSync(`${projectRoot}/tik.json`)) {
       this.dockerCompose()
       this.rancherCompose()
     } else {
