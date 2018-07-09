@@ -29,6 +29,7 @@ job_build_webpack:
   script:
     - npm install --registry=https://registry.npm.taobao.org
     - npm run build
+    - cp .env.example .env
     - tik docker
   only:
     - master

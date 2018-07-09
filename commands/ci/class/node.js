@@ -93,10 +93,10 @@ job_deploy:
     ${pkg.name || ''}:
       image: ${pkg.name}:stable
       environment:
-  ${(env => {
+${(env => {
         let output = ``
         for (const k in env) {
-          output += `      ${k}: ${env[k] || '""'}${EOL}`
+          output += `        ${k}: ${env[k] || '""'}${EOL}`
         }
         return output
       })(env)}
