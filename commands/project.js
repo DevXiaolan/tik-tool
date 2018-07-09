@@ -96,7 +96,7 @@ project.create = (argv) => {
 }
 
 project.release = (argv) => {
-  const tikConfig = {
+  let tikConfig = {
     group: null,
     name: null,
     version: '1.0.0'

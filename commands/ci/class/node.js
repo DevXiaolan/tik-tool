@@ -89,24 +89,24 @@ job_deploy:
     pkg.name = formatName(pkg.name)
     const tpl =
       `version: '2'
-  services:
-    ${pkg.name || ''}:
-      image: ${pkg.name}:stable
-      environment:
+services:
+  ${pkg.name || ''}:
+    image: ${pkg.name}:stable
+    environment:
 ${(env => {
-        let output = ``
-        for (const k in env) {
-          output += `        ${k}: ${env[k] || '""'}${EOL}`
-        }
-        return output
-      })(env)}
-      stdin_open: true
-      external_links:
-      - database/mongo:mongo
-      - database/redis:redis
-      volumes:
-      - /tmp:/tmp
-      tty: true
+      let output = ``
+      for (const k in env) {
+        output += `        ${k}: ${env[k] || '""'}${EOL}`
+      }
+      return output
+    })(env)}
+    stdin_open: true
+    external_links:
+    - database/mongo:mongo
+    - database/redis:redis
+    volumes:
+    - /tmp:/tmp
+    tty: true
   `
     //todo 后续要自动识别服务依赖 加到 external_links
     fs.writeFileSync(`${projectRoot}/docker-compose.yml`, tpl)
