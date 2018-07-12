@@ -6,28 +6,31 @@ const Err = require('../utils/error_handler')
 const project = {}
 const colors = require('colors')
 const readline = require('readline-sync')
+const inquirer = require('inquirer')
 
-project.create = (argv) => {
-  let projectName = ''
-  let group = ''
-  let appId = 0
-  while (!projectName) {
-    projectName = readline.question('Project Name?'.yellow)
-  }
-  while (!group) {
-    group = readline.question('Group Name?'.yellow)
-  }
-  while (!appId) {
-    appId = readline.question('AppId?'.yellow)
-  }
-
-
-  const items = ['node', 'cronjob', 'web', 'go']
-  const type = items[readline.keyInSelect(items, 'Project Type:')]
-  if (!type) {
-    console.log('DO NOTING!'.yellow)
-    process.exit()
-  }
+project.create = async (argv) => {
+  const answer = await inquirer.prompt([{
+    type: 'Input',
+    name: 'projectName',
+    message: 'Project Name: '
+  },{
+    type: 'Input',
+    name: 'group',
+    message: 'Gitlab Group Name: '
+  },{
+    type: 'Input',
+    name: 'appId',
+    filter: input => Number.parseInt(input),
+    message: 'APP_ID : '
+  },
+  {
+    type: 'list',
+    name: 'type',
+    choices: ['node', 'cronjob', 'web', 'go'],
+    message: 'Project Type:',
+    default: 'node'
+  }])
+  let { projectName, group, appId, type } = answer
 
   let root = `${process.cwd()}/${projectName}`
   if (type === 'go') {
@@ -83,7 +86,7 @@ project.create = (argv) => {
     Err(`Init tik.json Failed`)
     return
   }
-  if (type === 'go'){
+  if (type === 'go') {
     if (shell.sed('-i', '{group}', group, `${root}/main.go`).code !== 0) {
       Err(`Init main.go Failed`)
       return
