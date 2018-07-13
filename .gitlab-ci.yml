@@ -6,7 +6,7 @@ stages:
 
 job_build:
   stage: build
-  image: hub.tik:5000/node:tik
+  image: gitlab/dind
   script:
     - sed -i 's/{version}/1.1.8/' ./dockerfile/node-with-tool/Dockerfile
     - cd ./dockerfile/node-with-tool/
