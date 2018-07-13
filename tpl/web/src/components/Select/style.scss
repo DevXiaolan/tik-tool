@@ -1,0 +1,48 @@
+$name: component-Select;
+
+.#{$name}{
+    .#{$name}-scroll{
+        overflow-x: hidden;
+        overflow-y: auto;
+        box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
+        -webkit-overflow-scrolling: auto;
+        >div{
+            position: static!important;
+            display: block;
+            .ant-select-dropdown{
+                position: static!important;
+                left: 0!important;
+                top: 0!important;
+            }
+            .ant-select-dropdown-menu{
+                max-height: none;
+            }
+        }
+    }
+    &.#{$name}-pc{
+        .ant-select-dropdown{
+            padding-right: 15px;
+        }
+    }
+    .ant-select-open+.#{$name}-scroll{
+        margin-top: 2px;
+    }
+    .ant-select-selection{
+        border-radius: 0;
+        border: 0.8px solid #d9d9d9;
+    }
+    &.#{$name}-deepPurple{
+        .ant-select-open .ant-select-selection{
+            box-shadow: 0 0 0 2px rgba(107, 78, 104, 0.2);
+        }
+        .ant-select-dropdown-menu-item:hover,.ant-select-dropdown-menu-item-active{
+            background-color: #f7f3f8;
+        }
+        .ant-select-dropdown-menu-item-selected{
+            background-color: rgba(107, 78, 104, 0.2);
+        }
+        .ant-select-dropdown.ant-select-dropdown--multiple .ant-select-dropdown-menu-item-selected:after, .ant-select-dropdown.ant-select-dropdown--multiple .ant-select-dropdown-menu-item-selected:hover:after{
+            color: #4e394c;
+        }
+    }
+}

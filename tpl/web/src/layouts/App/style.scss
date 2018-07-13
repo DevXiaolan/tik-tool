@@ -1,0 +1,9 @@
+$name: layoutApp;
+
+.#{$name}{
+    .#{$name}-body{
+        width: 100%;
+        min-height: 100%;
+        float: left;
+    }
+}

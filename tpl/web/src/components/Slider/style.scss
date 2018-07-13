@@ -1,0 +1,21 @@
+$name: component-Slider;
+
+.#{$name}{
+    &.deepPurple{
+        .ant-slider-track{
+            background-color: #6b4e68;
+        }
+        .ant-slider:hover .ant-slider-track{
+            background-color: #4E394C;
+        }
+        .ant-slider-handle, .ant-slider-dot-active{
+            border-color: #6b4e68;
+        }
+        .ant-slider-handle:active {
+            box-shadow: 0 0 0 2px rgba(107, 78, 104, 0.2);
+        }
+        .ant-slider:hover .ant-slider-handle{
+            border-color: #4E394C;
+        }
+    }
+}

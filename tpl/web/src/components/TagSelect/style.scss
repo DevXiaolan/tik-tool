@@ -1,0 +1,14 @@
+$name: component-TagSelect;
+
+.#{$name}{
+    margin-top: -8px;
+    margin-left: -8px;
+    &:after{
+        content: "";
+        display: block;
+        clear: both;
+    }
+    .ant-tag{
+        margin: 8px 0 0 8px;
+    }
+}

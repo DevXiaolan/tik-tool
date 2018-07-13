@@ -1,0 +1,67 @@
+$name: component-TagItem;
+@mixin clear{
+    content: "";
+    display: block;
+    clear: both;
+}
+
+.#{$name}{
+    &:active{
+        background-color: #ddd;
+    }
+    .#{$name}-content{
+        &:after{
+            @include clear;
+        }
+        .#{$name}-label{
+            width: 85px;
+            margin-right: 5px;
+            float: left;
+        }
+        .#{$name}-control{
+            float: left;
+            margin-bottom: -8px;
+            margin-top: -0.5px;
+            >.ant-tag{
+                display: block;
+                float: left;
+                margin-bottom: 8px;
+            }
+            &:after{
+                @include clear;
+            }
+        }
+    }
+    &-readonly{
+        &.am-list-item-active,&:active{
+            background-color: #fff;
+        }
+        .#{$name}-content{
+            .#{$name}-label{
+                color: #bbb;
+            }
+        }
+    }
+}
+
+.#{$name}-modal{
+    .#{$name}-select-border{
+        background-color: #f2f2f2;
+        .#{$name}-select-list{
+            height: 100%;
+            padding-bottom: 61px;
+            overflow: scroll;
+            .component-ModularContainer{
+                padding-bottom: 7px;
+                .ant-tag{
+                    margin-bottom: 8px;
+                }
+            }
+        }
+        .#{$name}-select-button{
+            width: 100%;
+            position: absolute;
+            bottom: -1px;
+        }
+    }
+}

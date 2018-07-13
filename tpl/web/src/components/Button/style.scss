@@ -1,0 +1,111 @@
+$name: component-Button;
+
+.#{$name}{
+    height: 45px;
+    cursor: pointer;
+    //transition: background-color 200ms;
+    .ant-spin-container{
+        transition: none;
+    }
+    &.#{$name}-normal,&.#{$name}-think{
+        &.#{$name}-sideBorder.#{$name}-half:after{
+            content: "";
+            display: block;
+            position: absolute;
+            border-left: 0.7px solid #fff;
+            height: 16px;
+            margin-top: -29.5px;
+            margin-left: -0.2px;
+        }
+        &.#{$name}-sideBorder.#{$name}-full{
+            border-left: 0.7px solid #fff;
+        }
+    }
+    &.#{$name}-normal{
+        background-color: #FF3433;
+        border: 0.8px solid #FF3433;
+        color: #fff;
+        &:active{
+            background-color: #9C1F1F;
+        }
+    }
+    &.#{$name}-think{
+        background-color: #4E394C;
+        border: 0.8px solid #2E222C;
+        color: #fff;
+        &:active{
+            background-color: #3F3142;
+        }
+    }
+
+    &.#{$name}-weaken{
+        background-color: #F8F8F8;
+        border-top: 0.8px solid #b5b5b5;
+        border-bottom: 0.8px solid #b5b5b5;
+        color: #000;
+        &:active{
+            background-color: #ddd;
+        }
+        &.#{$name}-sideBorder.#{$name}-half:after{
+            content: "";
+            display: block;
+            position: absolute;
+            border-left: 0.7px solid #b5b5b5;
+            height: 16px;
+            margin-top: -29.5px;
+            margin-left: -0.2px;
+            background-color: #b5b5b5;
+        }
+        &.#{$name}-sideBorder.#{$name}-full{
+            border-left: 0.7px solid #b5b5b5;
+        }
+    }
+    &.#{$name}-white{
+        border-top: 0.8px solid #b5b5b5;
+        border-bottom: 0.8px solid #b5b5b5;
+        color: #000;
+        background-color: #fff;
+        &:active{
+            background-color: #ddd;
+        }
+    }
+    &.#{$name}-null{
+        transition: opacity 200ms;
+        &:active{
+            opacity: 0.4;
+        }
+    }
+
+    .#{$name}-content{
+        height: 43px;
+        .#{$name}-icon{
+            height: 27px;
+            margin-bottom: -1px;
+            font-size: 18px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .#{$name}-name{
+            text-align: center;
+            font-size: 10px;
+            &:after{
+                content: "";
+                display: block;
+                clear: both;
+            }
+        }
+        &.#{$name}-line{
+            text-align: center;
+            padding-top: 10px;
+            .#{$name}-icon{
+                display: inline-block;
+                font-size: 16px;
+            }
+            .#{$name}-name{
+                display: inline-block;
+                font-size: 16px;
+            }
+        }
+    }
+}

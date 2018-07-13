@@ -1,0 +1,29 @@
+.component-MessageTitle{
+    text-align: center;
+    .title{
+        margin: 0 15px;
+    }
+    .line{
+        display: inline-block;
+        span{
+            width: 50px;
+            height: 1px;
+            display: block;
+            margin-top: -6px;
+            background-color: #000;
+        }
+    }
+
+    .icon{
+        margin-right: 5px;
+    }
+    .icon.primary{
+        color: #186DB7;
+    }
+    .icon.warning{
+        color: #EA7606;
+    }
+    .icon.danger{
+        color: #D9403C;
+    }
+}

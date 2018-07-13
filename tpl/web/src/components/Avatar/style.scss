@@ -1,0 +1,63 @@
+.component-Avatar{
+    &:after{
+        content: "";
+        display: block;
+        clear: both;
+    }
+    .avatar{
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        word-wrap: normal;
+        box-sizing: border-box;
+        background-size: cover;
+        background-clip: content-box;
+        border-radius: 50%;
+        background-position: center center;
+        display: block;
+        float: left;
+        margin-left: 8px;
+        &:first-child{
+            margin-left: 0;
+        }
+        &.x-sm{
+            width: 17.5px;
+            height: 17.5px;
+        }
+        &.sm{
+            width: 20px;
+            height: 20px;
+        }
+        &.md{
+            width: 40px;
+            height: 40px;
+        }
+        &.lg{
+            width: 100px;
+            height: 100px;
+        }
+        &-default{
+            float: left;
+            margin-left: 8px;
+            color: #999;
+            display: block;
+            &:first-child{
+                margin-left: 0;
+            }
+            &.sm{
+                font-size: 20px;
+            }
+            &.md{
+                font-size: 40px;
+            }
+            &.lg{
+                font-size: 100px;
+            }
+        }
+    }
+    .msg{
+        float: left;
+        margin-left: 10px;
+        font-size: 12px;
+    }
+}

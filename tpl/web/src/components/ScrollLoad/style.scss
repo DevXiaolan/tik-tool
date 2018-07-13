@@ -1,0 +1,20 @@
+$name: component-ScrollLoad;
+
+.#{$name}{
+    .#{$name}-loading{
+        border-top: 0.8px dashed #ddd;
+        height: 20px;
+        text-align: center;
+        font-size: 15px;
+        color: #B4B4B4;
+        transition: color 200ms;
+        cursor: pointer;
+        >i{
+            display: block;
+            margin-top: 3px;
+            &:active{
+                color: #333;
+            }
+        }
+    }
+}

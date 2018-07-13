@@ -1,0 +1,148 @@
+$name: component-Review;
+
+.#{$name}{
+    border-top: .8px solid #ddd;
+    padding-top: 9px;
+    padding-bottom: 4px;
+    .component-Review-review .component-Text-lock{
+        margin-bottom: -3px;
+    }
+    &:last-child{
+        padding-bottom: 0;
+        margin-bottom: -5px;
+        .component-Review-review .component-Text-lock{
+            margin-bottom: -15px;
+        }
+    }
+
+    .#{$name}-border{
+        display: flex;
+        .#{$name}-info{
+            flex: 1;
+            padding-left: 15px;
+            .#{$name}-name{
+                margin-top: 0;
+            }
+            .#{$name}-time{
+                height: 13px;
+                margin-top: 1px;
+                font-size: 12px;
+                color: #999;
+            }
+        }
+        .#{$name}-operation{
+            display: block;
+            margin-top: -12px;
+            margin-right: -10px;
+            padding-right: 10px;
+            padding-bottom: 8px;
+            padding-top: 12px;
+            padding-left: 10px;
+            color: #B4B4B4;
+            font-size: 15px;
+            transition: color 200ms;
+            &:active{
+                color: #000;
+            }
+        }
+
+    }
+    .#{$name}-content{
+        margin-top: 5px;
+        padding-left: 20px;
+        .#{$name}-review{
+            background-color: #fff;
+            transition: background-color 250ms;
+            &:active{
+                background-color: #eee;
+            }
+        }
+        .#{$name}-sns{
+            margin-top: 3px;
+            border-top: 0.8px dashed #ddd;
+        }
+        .#{$name}-like-icon{
+            margin-top: 6px;
+            font-size: 14px;
+            &-liked{
+                color: #ff3433;
+            }
+        }
+        .#{$name}-forward-icon{
+            margin-top: 3px;
+            font-size: 15px;
+            &-forwarded{
+                color: #ff3433;
+            }
+        }
+        .#{$name}-reply{
+            margin-top: 3px;
+            //border-top: 0.8px dashed #ddd;
+            padding-left: 24px;
+            font-size: 12px;
+            .#{$name}-reply-icon{
+                display: block;
+                float: left;
+                height: 14px;
+                margin-top: 1px;
+                margin-left: -24px;
+                margin-right: 10px;
+                font-size: 12px;
+            }
+            .#{$name}-reply-get-border{
+                padding-right: 44px;
+                .#{$name}-reply-get{
+                    height: 20px;
+                    margin-bottom: -9px;
+                    text-align: center;
+                    font-size: 15px;
+                    color: #B4B4B4;
+                    transition: color 200ms;
+                    cursor: pointer;
+                    >i{
+                        display: block;
+                        margin-top: -2px;
+                        &:active{
+                            color: #333;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.#{$name}-operation-item{
+    &:hover{
+        cursor: pointer;
+    }
+}
+
+.#{$name}-operation-icon{
+    font-size: 14px;
+    &-liked{
+        color: #ff3433;
+    }
+    &-reply{
+        font-size: 12px;
+    }
+    &-forward{
+        font-size: 15px;
+        display: block;
+        margin-top: 2px;
+    }
+    &-forwarded{
+        color: #ff3433;
+    }
+    &-delete{
+        font-size: 15px;
+        color: #ff3433;
+    }
+}
+
+.#{$name}-operation-text{
+    font-size: 14px;
+    &-delete{
+        color: #ff3433;
+    }
+}

@@ -1,0 +1,17 @@
+cache:
+  untracked: true
+  key: cache_${CI_COMMIT_REF_SLUG}
+stages:
+  - build
+
+job_build:
+  stage: build
+  image: hub.tik:5000/node:tik
+  script:
+    - npm publish --registry=http://172.20.160.7:4873
+    - sed -i 's/{version}/1.1.8/' ./dockerfile/node-with-tool/Dockerfile
+    - cd ./dockerfile/node-with-tool/
+    - ./build
+  only:
+    - master
+    - /^release.*$/

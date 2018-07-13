@@ -1,0 +1,17 @@
+$name: component-SidebarLayout;
+
+.#{$name}{
+    .#{$name}-left{
+        z-index: 10000002;
+    }
+    .#{$name}-middle{
+        .#{$name}-middle-border{
+            position: fixed;
+            z-index: 10000001;
+            transition: background-color 200ms;
+        }
+    }
+    .#{$name}-right{
+        z-index: 10000002;
+    }
+}

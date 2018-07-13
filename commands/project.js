@@ -98,34 +98,31 @@ project.create = async (argv) => {
   }
 }
 
-project.release = (argv) => {
-  let tikConfig = {
-    group: null,
-    name: null,
-    version: '1.0.0'
+project.release = async (argv) => {
+  
+  if (!fs.existsSync(`${process.cwd()}/tik.json`)) {
+    console.log('tik.json NOT FOUND !'.yellow)
+    process.exit()
   }
-  if (fs.existsSync(`${process.cwd()}/tik.json`)) {
-    tikConfig = require(`${process.cwd()}/tik.json`)
-  }
-
-  if (!tikConfig.group) {
-    tikConfig.group = readline.question('Set gitlab group for this repo: (e.g tikcoin )')
-    fs.writeFileSync(`${process.cwd()}/tik.json`, JSON.stringify(tikConfig, null, 2))
-  }
-  if (!tikConfig.name) {
-    tikConfig.name = readline.question('Set repo-name : (e.g tikcoin-api)')
-    fs.writeFileSync(`${process.cwd()}/tik.json`, JSON.stringify(tikConfig, null, 2))
-  }
+  const tikConfig = require(`${process.cwd()}/tik.json`)
 
   console.log(`${EOL}Current version is ${tikConfig.version.yellow}${EOL}`)
   const select = versionSelect(tikConfig.version)
-  const newVersion = readline.keyInSelect(select.name, 'You should know that what you are doing !')
-  if (newVersion !== -1) {
-    if (shell.exec(`git branch release/${select.arr[newVersion]} && git checkout release/${select.arr[newVersion]}`).code !== 0) {
+  const answer = await inquirer.prompt([{
+    name: 'newVersion',
+    type: 'list',
+    choices: Object.keys(select),
+    message: 'You should know that what you are doing !',
+    filter: input => select[input] ,
+    default: Object.keys(select)[0]
+  }])
+  const { newVersion } = answer
+  if (newVersion) {
+    if (shell.exec(`git branch release/${newVersion} && git checkout release/${newVersion}`).code !== 0) {
       console.log('something wrong!'.red)
       process.exit()
     }
-    tikConfig.version = select.arr[newVersion] || tikConfig.version
+    tikConfig.version = newVersion || tikConfig.version
     fs.writeFileSync(`${process.cwd()}/tik.json`, JSON.stringify(tikConfig, null, 2))
     console.log('Done !'.green)
   } else {
@@ -151,16 +148,9 @@ function versionSelect(version) {
   const feature = [bits[0], bits[1] * 1 + 1, '0'].join('.')
   const major = [bits[0] * 1 + 1, '0', '0'].join('.')
   return {
-    arr: [
-      patch,
-      feature,
-      major,
-    ],
-    name: [
-      'patch:' + patch,
-      'feature:'.green + feature,
-      'major:'.red + major,
-    ],
+    ['patch:' + patch]:patch,
+    ['feature:'.green + feature]:feature,
+    ['major:'.red + major]:major,
   }
 }
 

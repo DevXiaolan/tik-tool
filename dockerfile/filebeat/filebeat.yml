@@ -1,0 +1,11 @@
+filebeat:
+  prospectors:
+    - 
+      paths:
+      - /tmp/*.log
+      type: log
+      scan_frequency: 5s
+      tail_files: true
+output:
+  elasticsearch:
+    hosts: ["es:9200"]

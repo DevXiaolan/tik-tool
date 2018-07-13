@@ -1,0 +1,49 @@
+$name: component-Rate;
+
+.#{$name}{
+    &.#{$name}-normal{
+        .#{$name}-icon
+        {
+            font-size: 16px;
+        }
+        .ant-rate-star{
+            margin-right: 8px;
+        }
+    }
+    &.#{$name}-large{
+        .#{$name}-icon
+        {
+            font-size: 12px;
+        }
+        .ant-rate-star{
+            margin-right: 3px;
+        }
+    }
+    &.#{$name}-small{
+        .#{$name}-icon
+        {
+            font-size: 10px;
+        }
+        .ant-rate-star{
+            margin-right: 4px;
+        }
+    }
+    &.#{$name}-x-small{
+        .#{$name}-icon
+        {
+            font-size: 8px;
+        }
+        .ant-rate-star{
+            margin-right: 2px;
+        }
+    }
+    &.ant-rate-disabled .ant-rate-star{
+        cursor: default;
+    }
+    .ant-rate-star-half .ant-rate-star-first, .ant-rate-star-full .ant-rate-star-second{
+        color: #ff3433;
+    }
+    .ant-rate-star:last-child{
+        margin-right: 0;
+    }
+}

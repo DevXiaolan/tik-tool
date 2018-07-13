@@ -1,0 +1,10 @@
+$name: component-Container;
+@mixin clear{
+    content: "";
+    display: block;
+    clear: both;
+}
+
+.#{$name}{
+    margin: auto;
+}

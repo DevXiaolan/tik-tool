@@ -1,0 +1,85 @@
+$name: component-Text-List;
+
+.#{$name}{
+    .#{$name}-list{
+        padding-left: 20px;
+        font-size: 14px;
+        margin-bottom: 3px;
+        .#{$name}-icon{
+            font-size: 12px;
+            margin: 5px 0 0 -20px;
+            float: left;
+            color: #d92c2b;
+        }
+        .#{$name}-icon-lg{
+            font-size: 16px;
+        }
+        .#{$name}-icon-md{
+            font-size: 14px;
+        }
+        .#{$name}-icon-sm{
+            font-size: 12px;
+        }
+        .#{$name}-icon-x-sm{
+            font-size: 10px;
+        }
+        .#{$name}-content{
+            width: 100%;
+            margin: -4px 0 1px 0;
+        }
+    }
+    .#{$name}-single{
+        margin: -4px 0 3px 0;
+    }
+    .#{$name}-content-lg{
+        font-size: 16px;
+    }
+    .#{$name}-content-md{
+        font-size: 14px;
+    }
+    .#{$name}-content-sm{
+        font-size: 12px;
+    }
+    .#{$name}-content-x-sm{
+        font-size: 10px;
+    }
+    .#{$name}-line{
+        border-bottom: .8px dashed #ddd;
+        margin-bottom: 10px;
+        padding-bottom: 25px;
+    }
+
+    .#{$name}-extra{
+        margin-top: 5px;
+        .#{$name}-name{
+            font-size: 12px;
+            float: right;
+            margin-right: 8px;
+        }
+        .#{$name}-avatar{
+            font-size: 12px;
+            float: right;
+            margin-right: 5px;
+        }
+        .#{$name}-files{
+            margin-right: 20px;
+            color: #108ee9;
+            font-size: 12px;
+            float: right;
+            cursor: pointer;
+        }
+        .#{$name}-files-icon{
+            float: right;
+            margin-top: 3px;
+        }
+        .#{$name}-extraText{
+            float: right;
+            margin-left: 5px;
+        }
+        .#{$name}-time{
+            font-size: 12px;
+            float: right;
+            color: #999;
+        }
+    }
+}

@@ -1,0 +1,6 @@
+$name: component-Scroll;
+
+.#{$name}{
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+}

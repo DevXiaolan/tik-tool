@@ -1,0 +1,26 @@
+$name: component-ModalAntd;
+
+.#{$name}{
+    .#{$name}-border{
+        width: 100%;
+        height: 100%;
+        >div{
+            width: 100%;
+        }
+    }
+    &-center{
+        .#{$name}-border{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+    &-bottom{
+        .#{$name}-border{
+            >div{
+                position: absolute;
+                bottom: 0;
+            }
+        }
+    }
+}

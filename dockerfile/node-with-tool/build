@@ -1,0 +1,3 @@
+docker build -t node:tik .
+docker tag node:tik hub.tik:5000/node:tik
+docker push hub.tik:5000/node:tik

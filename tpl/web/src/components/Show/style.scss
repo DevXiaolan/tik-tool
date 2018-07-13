@@ -1,0 +1,8 @@
+$name: component-Show;
+
+.#{$name}{
+    position: absolute;
+    &-visible{
+        overflow: visible !important;
+    }
+}

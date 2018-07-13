@@ -1,0 +1,19 @@
+$name: component-User;
+
+.#{$name}{
+    display: inline-block;
+    &-sm{
+        font-size: 14px;
+    }
+    &-x-sm{
+        font-size: 12px;
+    }
+    .#{$name}-avatar{
+        float: left;
+        margin-right: 5px;
+    }
+    .#{$name}-link{
+        color: #224A67;
+        //color: #000;
+    }
+}

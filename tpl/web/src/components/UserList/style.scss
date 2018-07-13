@@ -1,0 +1,61 @@
+$name: component-UserList;
+
+.#{$name}{
+    &-sm{
+        font-size: 14px;
+        &.#{$name}-haveIcon{
+            padding-left: 30px;
+        }
+        >i{
+            display: block;
+            float: left;
+            margin-left: -30px;
+            font-size: 16px;
+        }
+    }
+    &-x-sm{
+        font-size: 12px;
+        &.#{$name}-haveIcon{
+            padding-left: 24px;
+        }
+        >i{
+            display: block;
+            float: left;
+            margin-left: -24px;
+            font-size: 14px;
+        }
+    }
+    .component-User{
+        margin-top: 4px;
+        margin-right: 5px;
+    }
+    .#{$name}-more{
+        cursor: pointer;
+        color: #999;
+        transition: color 200ms;
+        &:active{
+            color: #000;
+        }
+    }
+}
+
+.#{$name}-modal{
+    .#{$name}-show-border{
+        height: 61.8%;
+        background-color: #fff;
+        .#{$name}-show{
+            height: 100%;
+            padding: 11px 15px 61px 15px;
+            overflow: scroll;
+            .component-User{
+                margin-top: 4px;
+                margin-right: 10px;
+            }
+        }
+        .#{$name}-button{
+            width: 100%;
+            position: absolute;
+            bottom: -1px;
+        }
+    }
+}

@@ -1,0 +1,8 @@
+$name: component-SidebarLayout-Sidebar;
+
+.#{$name}{
+    position: fixed;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}

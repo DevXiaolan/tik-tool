@@ -1,0 +1,17 @@
+$name: component-Grid;
+@mixin clear{
+    content: "";
+    display: block;
+    clear: both;
+}
+
+.#{$name}{
+    .#{$name}-container{
+        &:after{
+            @include clear;
+        }
+        .#{$name}-item{
+            float: left;
+        }
+    }
+}

@@ -1,0 +1,27 @@
+$name: component-Text;
+
+.#{$name}{
+    .#{$name}-text-border{
+        overflow: hidden;
+        transition: height 600ms ease;
+        .#{$name}-ellipsis{
+            position: absolute;
+        }
+    }
+    .#{$name}-lock{
+        height: 20px;
+        //margin-bottom: -15px;
+        text-align: center;
+        font-size: 20px;
+        color: #B4B4B4;
+        transition: color 200ms;
+        cursor: pointer;
+        >i{
+            display: block;
+            margin-top: -4px;
+            &:active{
+                color: #333;
+            }
+        }
+    }
+}

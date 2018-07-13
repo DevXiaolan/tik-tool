@@ -1,0 +1,26 @@
+.component-ToastContent{
+    .success{
+        color: #0DDD74;
+        font-size: 20px;
+    }
+    .fail{
+        color: #FF6D6B;
+        font-size: 20px;
+    }
+    .warning{
+        color: #FF7D18;
+        font-size: 20px;
+    }
+    .info{
+        color: #fff;
+        font-size: 20px;
+    }
+    .loading{
+        color: #77C9FF;
+        font-size: 20px;
+    }
+    .offline{
+        color: #FF6D6B;
+        font-size: 20px;
+    }
+}

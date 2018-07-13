@@ -1,0 +1,25 @@
+$name: component-SegmentedControl;
+
+.#{$name}{
+    border: 1px solid #000;
+    border-radius: 5px;
+    overflow: hidden;
+    &:after{
+        display: block;
+        content: "";
+        clear: both;
+    }
+    .#{$name}-item{
+        float: left;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-left: 1px solid #000;
+        transition: background-color 200ms;
+        cursor: pointer;
+        line-height: 27px;
+        &:first-child{
+            border-left: none;
+        }
+    }
+}
