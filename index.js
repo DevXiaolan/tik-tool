@@ -42,6 +42,10 @@ switch (command) {
       require('./commands/optimization').detail(subCommand)
     }
     break
+  // tik swagger
+  case 'swagger':
+    require('./commands/swagger')(argv)
+    break
   // todo tik gen {xxx}
   case 'gen':
 

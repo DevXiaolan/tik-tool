@@ -9,7 +9,13 @@ const healthRouter = require('koa-router')()
 healthRouter.get('/:version/ping', (ctx) => {
   return ctx.success(tikConf)
 })
-
+healthRouter.get('/:version/swagger', async (ctx) => {
+  if (fs.existsSync(path.resolve(`${__dirname}/../swagger.json`))) {
+    ctx.body = require('../swagger.json')
+  } else {
+    return ctx.success('swagger.json not found')
+  }
+})
 const colorMap = {
   'HEAD,GET': colors.green,
   'POST': colors.blue,

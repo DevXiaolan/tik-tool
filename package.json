@@ -1,6 +1,6 @@
 {
   "name": "tik-tool",
-  "version": "1.1.8",
+  "version": "1.2.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -14,7 +14,10 @@
   "dependencies": {
     "colors": "^1.2.4",
     "dotenv": "^5.0.1",
+    "escodegen": "^1.11.0",
     "eslint": "^4.19.1",
+    "esprima": "^4.0.1",
+    "esprima-ast-utils": "0.0.7",
     "inquirer": "^6.0.0",
     "readline-sync": "^1.4.9",
     "shelljs": "^0.8.1",

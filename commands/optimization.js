@@ -55,7 +55,7 @@ const getAllRequire = (path) => {
     const matches = content.match(/require\(['|"](.*?)['|"]\)/g)
     for (const k in matches) {
       const f = matches[k].replace(/require\([\'|"]|[\'|"]\)/g, '')
-      const m
+      let m
       if (f.startsWith('@')) {
         m = f
       } else {
