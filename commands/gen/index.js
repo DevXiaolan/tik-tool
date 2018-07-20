@@ -59,6 +59,17 @@ const client = async (argv) => {
               break
               break
           }
+          if(p.enum){
+            for(let k in p.enum){
+              if(typeof p.enum[k] === 'string'){
+                p.enum[k] = `'${p.enum[k]}'`
+              }
+            }
+            let enumContent = fs.readFileSync(Path.resolve(`${__dirname}/enum.tpl`)).toString()
+            enumContent = enumContent.replace(/__name__/g, p.name)
+            enumContent = enumContent.replace(/__enums__/g, p.enum.join(','))
+            content = content.replace('//enums', `${enumContent}${EOL}//enums`)
+          }
         })
         query.push('}')
         body.push('}')

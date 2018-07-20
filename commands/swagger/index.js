@@ -91,6 +91,7 @@ function toSwagger(apis) {
   })
   fs.writeFileSync(`${process.cwd()}/swagger.json`, JSON.stringify(swagger, null, 2))
   console.log(`File generated: ${`${process.cwd()}/swagger.json`.green}`)
+  
   process.exit()
 }
 

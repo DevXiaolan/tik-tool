@@ -1,4 +1,5 @@
 async __name__(__argv__){
+  //enums
   const resp = await request({
     uri: `${this.host}__path__`,
     method: '__METHOD__',
