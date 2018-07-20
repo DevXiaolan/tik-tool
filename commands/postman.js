@@ -20,17 +20,36 @@ module.exports = (argv) => {
     const path = `${swagger.basePath}${item}`
     const request = Object.keys(swagger.paths[item]).map(method => {
       const info =  swagger.paths[item][method]
-      const [ header, body, query ] = [{}, {}, {}]
+      const [ header, body, query ] = [[], {
+        mode: 'urlencoded',
+        urlencoded: []
+      }, []]
+      if (['post', 'put'].includes(method)) {
+        header.push({
+          key: 'Content-Type',
+          value: 'application/x-www-form-urlencoded'
+        })
+      }
       info.parameters.forEach(param => {
         switch (param.in) {
         case 'headers':
-          header[param.name] = ''
+          header.push({
+            key: param.name,
+            value: ''
+          })
           break
         case 'body':
-          body[param.name] = ''
+          body.urlencoded.push({
+            key: param.name,
+            value: '',
+            type: 'text'
+          })
           break
         case 'query':
-          query[param.name] = ''
+          query.push({
+            key: param.name,
+            value: ''
+          })
           break
         default:
           break
