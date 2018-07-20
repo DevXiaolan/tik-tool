@@ -32,7 +32,6 @@ function genError(appId) {
 }
 
 function toSwagger(apis) {
-  //console.log(JSON.stringify(apis, null, 2))
   const tikConf = require(`${process.cwd()}/tik.json`)
   const swagger = {
     swagger: '2.0',
@@ -81,6 +80,7 @@ function toSwagger(apis) {
           // "x-go-name": "Keyword",
           // "x-go-validate": "@uint64[0,10]",
           "name": h.request[k].name,
+          "description": h.request[k].desc || '未写注释',
           "in": h.request[k].position,
           "required": !!h.request[k].required
         }

@@ -44,15 +44,20 @@ class Picker {
     let result = null
     if (line.type === 'VariableDeclaration') {
       const init = line.declarations[0].init
-      if (init.type === 'CallExpression') {
+      
+      if (init && init.type === 'CallExpression' && init.callee.type==='MemberExpression') {
         //找到符合参数校验语法的一行代码
+        
         const code = codegen.generate(init.callee.object)
+        
         if (!code.includes('ctx.')){
           return result
         }
+        
         const pieces = code.split('.')
         if (pieces[0] === 'ctx') {
           result = {}
+          result.desc = line.leadingComments && line.leadingComments[0] && line.leadingComments[0].value
           for (let i = 1; i < pieces.length; i++) {
             if (pieces[i].startsWith('validate')) {
               const position = pieces[i].match(/validate(.*)\(/)
@@ -85,6 +90,7 @@ class Picker {
           const matched = code.match(/ctx\.headers\.(\w+)/)
           if (matched) {
             result = {}
+            result.desc = line.leadingComments && line.leadingComments[0] && line.leadingComments[0].value
             result.position = 'headers'
             result.name = matched[1]
           }
