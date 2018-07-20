@@ -71,6 +71,9 @@ switch (command) {
     console.log('Upgrade Failed'.red)
     process.exit()
     break
+  case 'postman':
+  require('./commands/postman')(argv)
+    break
   default:
     break
 }
