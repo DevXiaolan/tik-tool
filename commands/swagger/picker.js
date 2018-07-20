@@ -68,7 +68,7 @@ class Picker {
             } else if (pieces[i].startsWith('to')) {
               result.type = pieces[i].replace('to', '').replace(/\(.*\)/, '').toLowerCase()
             } else if (pieces[i].startsWith('isIn(')) {
-              let matched = pieces[i].replace('isIn(','').replace(')','')
+              let matched = pieces[i].replace('isIn(','').replace(')','').replace(/\'/g, '"')
               result.choices = JSON.parse(matched)
             } else if (pieces[i].startsWith('gt(') || pieces[i].startsWith('gte(')){
               let min = pieces[i].match(/gt[e]?\((.*?)\)/)
