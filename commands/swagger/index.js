@@ -36,8 +36,11 @@ function toSwagger(apis) {
   const tikConf = require(`${process.cwd()}/tik.json`)
   const swagger = {
     swagger: '2.0',
-    info: tikConf,
-    host: `http://172.20.160.7:${tikConf.appId}`,
+    info: {
+      ...tikConf,
+      title: `${tikConf.group}/${tikConf.name}`,
+    },
+    host: `172.20.160.7:${tikConf.appId}`,
     basePath: `/v${tikConf.version}`,
     schemes: ['http'],
     paths: {},
@@ -54,6 +57,7 @@ function toSwagger(apis) {
     swagger.paths[api.path][api.method].description = api.handlers[api.handlers.length - 1].desc
     swagger.paths[api.path][api.method].summary = swagger.paths[api.path][api.method].description
     swagger.paths[api.path][api.method].parameters = []
+    swagger.paths[api.path][api.method].operationId = api.handlers[api.handlers.length - 1].func
     swagger.paths[api.path][api.method].responses = {
       '200': {
         example:{
@@ -65,12 +69,13 @@ function toSwagger(apis) {
         }
       }
     }
+    
     api.handlers.forEach(h => {
       for (let k in h.request) {
-
-        swagger.paths[api.path][api.method].parameters.push({
-          //"maximum": 10,
-          // "minimum": 0,
+        let _tmp = {
+          "maximum": h.request[k].max,
+          "minimum": h.request[k].min,
+          "enum": h.request[k].choices,
           "type": h.request[k].type || '',
           // "format": "uint64",
           // "x-go-name": "Keyword",
@@ -78,7 +83,8 @@ function toSwagger(apis) {
           "name": h.request[k].name,
           "in": h.request[k].position,
           "required": !!h.request[k].required
-        })
+        }
+        swagger.paths[api.path][api.method].parameters.push(_tmp)
       }
     })
 

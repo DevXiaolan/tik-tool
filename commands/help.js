@@ -5,7 +5,7 @@ const { EOL } = require('os')
 
 module.exports = (argv) => {
   const entrance = path.resolve(__dirname + '/../index.js')
-  const helpers = xiaolanAst.genHelper(entrance)
+  let helpers = xiaolanAst.genHelper(entrance)
   if (argv._[0]) {
     helpers = {
       [argv._[0]]: helpers[argv._[0]]

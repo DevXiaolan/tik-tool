@@ -44,9 +44,12 @@ class Picker {
     let result = null
     if (line.type === 'VariableDeclaration') {
       const init = line.declarations[0].init
-      if (init.type === 'CallExpression' && init.callee.property && init.callee.property.name === 'val') {
+      if (init.type === 'CallExpression') {
         //找到符合参数校验语法的一行代码
         const code = codegen.generate(init.callee.object)
+        if (!code.includes('ctx.')){
+          return result
+        }
         const pieces = code.split('.')
         if (pieces[0] === 'ctx') {
           result = {}
@@ -64,6 +67,15 @@ class Picker {
               result.required = true
             } else if (pieces[i].startsWith('to')) {
               result.type = pieces[i].replace('to', '').replace(/\(.*\)/, '').toLowerCase()
+            } else if (pieces[i].startsWith('isIn(')) {
+              let matched = pieces[i].replace('isIn(','').replace(')','')
+              result.choices = JSON.parse(matched)
+            } else if (pieces[i].startsWith('gt(') || pieces[i].startsWith('gte(')){
+              let min = pieces[i].match(/gt[e]?\((.*?)\)/)
+              result.min = +min[1]
+            } else if (pieces[i].startsWith('lt(') || pieces[i].startsWith('lte(')){
+              let max = pieces[i].match(/lt[e]?\((.*?)\)/)
+              result.max = +max[1]
             }
           }
         }

@@ -4,7 +4,7 @@ const yargs = require('yargs')
 const colors = require('colors')
 const { EOL } = require('os')
 const { help, project, ci } = require('./commands')
-
+const Gen = require('./commands/gen')
 const argv = yargs
   .epilog('Power by TIK'.green)
   .argv
@@ -15,7 +15,7 @@ if (argv.h === true || argv.help === true) {
 }
 
 const command = argv._[0]
-
+const subCommand = argv._[1]
 switch (command) {
   // 创建项目 tik create
   case 'create':
@@ -35,20 +35,24 @@ switch (command) {
     break
   // 项目优化检查 tik opt
   case 'opt':
-    const subCommand = argv._[1]
+
     if (subCommand === undefined) {
       require('./commands/optimization').dependence()
     } else {
       require('./commands/optimization').detail(subCommand)
     }
     break
-  // tik swagger
+  // 生成swagger tik swagger
   case 'swagger':
     require('./commands/swagger')(argv)
     break
-  // todo tik gen {xxx}
+  // 代码生成器 tik gen {xxx}
   case 'gen':
-
+    if (Gen[subCommand]) {
+      Gen[subCommand](argv)
+    } else {
+      
+    }
     break
   default:
     break
