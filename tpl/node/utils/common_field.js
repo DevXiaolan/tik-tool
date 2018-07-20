@@ -3,12 +3,12 @@ module.exports = function commonFiledPlugin(schema) {
     // 创建时间
     createdAt: {
       type: Number,
-      default: Date.now()
+      default: Date.now
     },
     // 修改时间
     updatedAt: {
       type: Number,
-      default: Date.now()
+      default: Date.now
     },
     // 去掉__v
     __v: {
