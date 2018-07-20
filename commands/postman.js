@@ -55,7 +55,7 @@ module.exports = (argv) => {
     })
     request.forEach(res => {
       pm.item.push({
-        name: `${swagger.basePath}${path}`,
+        name: path,
         request: res,
         response: []
       })
