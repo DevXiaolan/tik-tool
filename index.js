@@ -2,6 +2,7 @@
 
 const yargs = require('yargs')
 const colors = require('colors')
+const shell = require('shelljs')
 const { EOL } = require('os')
 const { help, project, ci } = require('./commands')
 const Gen = require('./commands/gen')
@@ -51,8 +52,24 @@ switch (command) {
     if (Gen[subCommand]) {
       Gen[subCommand](argv)
     } else {
-      
+
     }
+    break
+  // 升级本程序 tik upgrade
+  case 'upgrade':
+    let pkg = require('./package.json')
+    console.log(`current version: ${pkg.version.green}`)
+    console.log(`☕️ 🍞 about uograde ...🐌`)
+    
+    if (0 === shell.exec('npm i -g tik-tool --registry=http://172.20.160.7:4873').code) {
+      delete require.cache[require.resolve('./package.json')]
+      pkg = require('./package.json')
+      console.log(`latest version: ${pkg.version.green}`)
+      console.log('Upgrade OK'.green)  
+      process.exit()
+    }
+    console.log('Upgrade Failed'.red)
+    process.exit()
     break
   default:
     break
