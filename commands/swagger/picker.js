@@ -62,7 +62,12 @@ class Picker {
             if (pieces[i].startsWith('validate')) {
               const position = pieces[i].match(/validate(.*)\(/)
               if (position) {
-                result.position = `${position[1]}`.toLowerCase()
+                result.position = {
+                  headers:'header',
+                  query: 'query',
+                  body: 'body',
+                  param: 'path'
+                }[`${position[1]}`.toLowerCase()]
               }
               const name = pieces[i].match(/\(['|"](.*)['|"]/)
               if (name) {

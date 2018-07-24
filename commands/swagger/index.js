@@ -18,14 +18,35 @@ function isRequirement(expression) {
 }
 
 function genError(appId) {
-  const result = {}
-  if(fs.existsSync(`${process.cwd()}/src/error.js`)){
+  const result = []
+  const uniqueCheck = {}
+  if (fs.existsSync(`${process.cwd()}/src/error.js`)) {
     const e = require(`${process.cwd()}/src/error.js`)
-    for(let k in e){
-      result[k] = {
+    for (let k in e) {
+      const _e = {
         code: (+appId) * 1e6 + e[k].code,
         message: e[k].message
       }
+      if (!uniqueCheck[_e.code]) {
+        result.push(_e)
+        uniqueCheck[_e.code] = true
+      }
+    }
+    if (fs.existsSync(`${process.cwd()}/src/clients`)) {
+      const clients = fs.readdirSync(`${process.cwd()}/src/clients`)
+      clients.forEach(c => {
+        if (c.endsWith('.json')) {
+          const e = require(`${process.cwd()}/src/clients/${c}`)
+          if (e.errors && e.errors.length) {
+            e.errors.forEach(_e => {
+              if (!uniqueCheck[_e.code]) {
+                result.push(_e)
+                uniqueCheck[_e.code] = true
+              }
+            })
+          }
+        }
+      })
     }
   }
   return result
@@ -33,6 +54,11 @@ function genError(appId) {
 
 function toSwagger(apis) {
   const tikConf = require(`${process.cwd()}/tik.json`)
+  let oldSwagger = null
+  if (fs.existsSync(`${process.cwd()}/swagger.json`)) {
+    oldSwagger = require(`${process.cwd()}/swagger.json`)
+  }
+
   const swagger = {
     swagger: '2.0',
     info: {
@@ -59,16 +85,21 @@ function toSwagger(apis) {
     swagger.paths[api.path][api.method].operationId = api.handlers[api.handlers.length - 1].func
     swagger.paths[api.path][api.method].responses = {
       '200': {
-        example:{
-          'application/json':{
-            code:0,
-            message:'success',
-            data:{}
+        example: {
+          'application/json': {
+            code: 0,
+            message: 'success',
+            data: oldSwagger
+              && oldSwagger.paths[api.path]
+              && oldSwagger.paths[api.path][api.method]
+              && oldSwagger.paths[api.path][api.method].responses
+              && oldSwagger.paths[api.path][api.method].responses['200'].example['application/json'].data
+              || {}
           }
         }
       }
     }
-    
+
     api.handlers.forEach(h => {
       for (let k in h.request) {
         let _tmp = {
@@ -91,7 +122,7 @@ function toSwagger(apis) {
   })
   fs.writeFileSync(`${process.cwd()}/swagger.json`, JSON.stringify(swagger, null, 2))
   console.log(`File generated: ${`${process.cwd()}/swagger.json`.green}`)
-  
+
   process.exit()
 }
 

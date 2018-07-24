@@ -15,6 +15,6 @@ const CONFIG = {
 
 mongoose.Promise = global.Promise
 
-mongoose.connect(`mongodb://${CONFIG.HOST}:${CONFIG.PORT}/${CONFIG.NAME}`)
+mongoose.connect(`mongodb://${CONFIG.HOST}:${CONFIG.PORT}/${CONFIG.NAME}`, { useNewUrlParser: true })
 
 module.exports = mongoose

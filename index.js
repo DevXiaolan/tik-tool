@@ -3,12 +3,14 @@
 const yargs = require('yargs')
 const colors = require('colors')
 const shell = require('shelljs')
-const { EOL } = require('os')
+const checkUpdate = require('./commands/check_update')
+
 const { help, project, ci } = require('./commands')
 const Gen = require('./commands/gen')
 const argv = yargs
   .epilog('Power by TIK'.green)
   .argv
+
 
 if (argv.h === true || argv.help === true) {
   help(argv)
@@ -60,12 +62,12 @@ switch (command) {
     let pkg = require('./package.json')
     console.log(`current version: ${pkg.version.green}`)
     console.log(`☕️ 🍞 about uograde ...🐌`)
-    
+
     if (0 === shell.exec('npm i -g tik-tool --registry=http://172.20.160.7:4873').code) {
       delete require.cache[require.resolve('./package.json')]
       pkg = require('./package.json')
       console.log(`latest version: ${pkg.version.green}`)
-      console.log('Upgrade OK'.green)  
+      console.log('Upgrade OK'.green)
       process.exit()
     }
     console.log('Upgrade Failed'.red)
@@ -74,3 +76,4 @@ switch (command) {
   default:
     break
 }
+
