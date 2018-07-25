@@ -71,6 +71,7 @@ switch (command) {
     console.log('Upgrade Failed'.red)
     process.exit()
     break
+  // 生成postman配置
   case 'postman':
   require('./commands/postman')(argv)
     break

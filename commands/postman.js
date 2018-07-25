@@ -3,11 +3,13 @@ const urlParse = require('url').parse
 
 module.exports = (argv) => {
   const projectRoot = process.cwd()
-  if (!fs.existsSync(`${projectRoot}/swagger.json`)) {
+  let swagger = {}
+  try {
+    swagger = require(`${projectRoot}/swagger.json`)
+  } catch (_) {
     console.log('swagger.json NOT FOUND, run tik swagger first !'.yellow)
     process.exit()
   }
-  const swagger = JSON.parse(fs.readFileSync(`${projectRoot}/swagger.json`).toString())
   const pm = {
     info: {
       _postman_id: '',
