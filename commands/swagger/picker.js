@@ -26,7 +26,7 @@ class Picker {
               
               const body = expression.declarations[0].init.body.body
               for (let k in body) {
-                const f = this.defParams(body[k], _handler)
+                const f = this.defParams(body[k])
                 f && (_handler.push(f))
               }
               this.handlers[expression.declarations[0].id.name] = {

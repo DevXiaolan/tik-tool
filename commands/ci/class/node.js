@@ -32,6 +32,7 @@ job_test:
     - npm test
     - cp .env.example .env
     - tik docker
+    - rm -fr node_modules
   variables:
 ${(env => {
   let output = ``

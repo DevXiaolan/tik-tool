@@ -17,6 +17,7 @@
     "ava": "^0.25.0",
     "colors": "^1.2.3",
     "dotenv": "^5.0.1",
+    "eslint": "^4.19.1",
     "ioredis": "^3.2.2",
     "koa": "^2.5.1",
     "koa-bodyparser": "^4.2.0",
@@ -26,9 +27,9 @@
     "log4js": "^2.7.0",
     "mongoose": "^5.0.17",
     "nyc": "^11.7.1",
+    "request-promise": "^4.2.2",
     "rightpad": "^1.0.1",
     "superkoa": "^1.0.3",
-    "eslint": "^4.19.1",
     "uuid": "^3.2.1"
   },
   "devDependencies": {

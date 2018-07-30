@@ -20,21 +20,24 @@ module.exports = class Web extends Base {
   untracked: true
   key: cache_\${CI_COMMIT_REF_SLUG}
 stages:
-  - build
+  - buildwebpack
+  - builddocker
   - deploy
 
 job_build_webpack:
-  stage: build
+  stage: buildwebpack
   image: hub.tik:5000/node:tik
   script:
     - npm install --registry=https://registry.npm.taobao.org
     - npm run build
+    - rm -fr node_modules
     - cp .env.example .env
     - tik docker
   only:
     - master
     - /^release.*$/
   variables:
+    TIME_STAMP: ${Date.now()}
 ${(env => {
         let output = ``
         for (const k in env) {
@@ -44,7 +47,7 @@ ${(env => {
       })(env)}
 
 job_build_docker_release:
-  stage: build
+  stage: builddocker
   image: gitlab/dind
   only:
     - /^release.*$/
@@ -52,14 +55,16 @@ job_build_docker_release:
     - docker build -t ${pkg.name}:${pkg.version} .
     - docker tag ${pkg.name}:${pkg.version} hub.tik:5000/${pkg.name}:${pkg.version}
     - docker push hub.tik:5000/${pkg.name}:${pkg.version}
+    - rm -fr node_modules
 
-job_build_docer_stable:
-  stage: build
+job_build_docker_stable:
+  stage: builddocker
   image: gitlab/dind
   only:
     - master
   script:
-    - docker build -t ${pkg.name}:stable .  
+    - docker build -t ${pkg.name}:stable .
+    - rm -fr node_modules  
 
 job_deploy:
   stage: deploy
@@ -68,6 +73,7 @@ job_deploy:
     - master
   script:
     - rm -f ~/.rancher/cli.json
+    - rm -fr node_modules
     - rancher --url http://172.20.160.7:8080/v2-beta --access-key 3F9EAEABA64D4876F506 --secret-key vyg17c8244obWeB8HoSGeeHVg54LGdTWMVj4yU6V up -d  --pull --force-upgrade --confirm-upgrade --stack ${pkg.group}-${pkg.name}-${pkg.version}`
 
     fs.writeFileSync(`${projectRoot}/.gitlab-ci.yml`, tpl)

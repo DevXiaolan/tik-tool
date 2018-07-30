@@ -51,7 +51,7 @@ const client = async (argv) => {
             case 'query':
               query.push(p.name + ',')
               break
-            case 'param':
+            case 'path':
               path = path.replace(':' + p.name, '${' + p.name + '}')
               break
             case 'headers':
