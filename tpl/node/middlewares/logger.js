@@ -9,6 +9,9 @@ module.exports = async (ctx, next) => {
     error: (data) => {
       logger.error({ data, traceId: ctx.state.traceId })
     },
+    fatal: (data) => {
+      logger.fatal({ data, traceId: ctx.state.traceId })
+    }
   }
   ctx.logger.info({
     type: 'IN',

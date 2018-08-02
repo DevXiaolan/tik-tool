@@ -27,6 +27,8 @@ stages:
 job_test:
   stage: test
   image: hub.tik:5000/node:tik
+  only:
+    - master
   script: 
     - npm install --registry=https://registry.npm.taobao.org
     - npm test
