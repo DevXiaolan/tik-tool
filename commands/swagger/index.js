@@ -86,16 +86,14 @@ function toSwagger(apis) {
     swagger.paths[api.path][api.method].responses = {
       '200': {
         example: {
-          'application/json': {
-            code: 0,
-            message: 'success',
-            data: oldSwagger
-              && oldSwagger.paths[api.path]
-              && oldSwagger.paths[api.path][api.method]
-              && oldSwagger.paths[api.path][api.method].responses
-              && oldSwagger.paths[api.path][api.method].responses['200'].example['application/json'].data
-              || {}
-          }
+          code: 0,
+          message: 'success',
+          data: oldSwagger
+            && oldSwagger.paths[api.path]
+            && oldSwagger.paths[api.path][api.method]
+            && oldSwagger.paths[api.path][api.method].responses
+            && (oldSwagger.paths[api.path][api.method].responses['200'].example.data || oldSwagger.paths[api.path][api.method].responses['200'].example['application/json'].data)
+            || {}
         }
       }
     }

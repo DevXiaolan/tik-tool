@@ -74,7 +74,7 @@ job_deploy:
   script:
     - rm -f ~/.rancher/cli.json
     - rm -fr node_modules
-    - rancher --url http://172.20.160.7:8080/v2-beta --access-key 3F9EAEABA64D4876F506 --secret-key vyg17c8244obWeB8HoSGeeHVg54LGdTWMVj4yU6V up -d  --pull --force-upgrade --confirm-upgrade --stack ${pkg.group}-${pkg.name}-${pkg.version}`
+    - rancher --url http://172.20.160.7:8080/v2-beta --access-key 3F9EAEABA64D4876F506 --secret-key vyg17c8244obWeB8HoSGeeHVg54LGdTWMVj4yU6V up -d  --pull --force-upgrade --confirm-upgrade --stack ${pkg.group}-${pkg.name}`
 
     fs.writeFileSync(`${projectRoot}/.gitlab-ci.yml`, tpl)
     console.log(`File generated: ${projectRoot}/.gitlab-ci.yml`.blue)

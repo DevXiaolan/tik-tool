@@ -125,6 +125,9 @@ project.release = async (argv) => {
     tikConfig.version = newVersion || tikConfig.version
     fs.writeFileSync(`${process.cwd()}/tik.json`, JSON.stringify(tikConfig, null, 2))
     console.log('Done !'.green)
+    //自动tik ci
+    shell.exec(`tik ci`)
+    shell.exec(`tik swagger`)
   } else {
     console.log('Cancel !'.yellow)
   }
