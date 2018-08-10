@@ -15,7 +15,7 @@ const notify = async (content) => {
   let uri = process.env.DING_DING_URI
 
   // 钉消息
-  let atMobiles = process.env.DINGDING_AT.split(',')
+  let atMobiles = process.env.DING_DING_AT.split(',')
 
   const options = {
     method: 'POST',

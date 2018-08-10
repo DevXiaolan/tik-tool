@@ -14,7 +14,7 @@ class Picker {
   run() {
     const ast = this.ast
     this.handlers = {}
-    
+
     for (let k in ast) {
       const expression = ast[k]
       if (expression.type === 'VariableDeclaration') {
@@ -23,14 +23,14 @@ class Picker {
             if (expression.declarations[0].init.async && expression.declarations[0].init.params[0] && expression.declarations[0].init.params[0].name === 'ctx') {
               //找到所有定义的 async function
               let _handler = []
-              
+
               const body = expression.declarations[0].init.body.body
               for (let k in body) {
                 const f = this.defParams(body[k])
                 f && (_handler.push(f))
               }
               this.handlers[expression.declarations[0].id.name] = {
-                desc: expression.leadingComments ? expression.leadingComments[0].value: '未写注释',
+                desc: expression.leadingComments ? expression.leadingComments[0].value : '未写注释',
                 params: _handler
               }
             }
@@ -44,16 +44,16 @@ class Picker {
     let result = null
     if (line.type === 'VariableDeclaration') {
       const init = line.declarations[0].init
-      
-      if (init && init.type === 'CallExpression' && init.callee.type==='MemberExpression') {
+
+      if (init && init.type === 'CallExpression' && init.callee.type === 'MemberExpression') {
         //找到符合参数校验语法的一行代码
-        
+
         const code = codegen.generate(init.callee.object)
-        
-        if (!code.includes('ctx.')){
+
+        if (!code.includes('ctx.')) {
           return result
         }
-        
+
         const pieces = code.split('.')
         if (pieces[0] === 'ctx') {
           result = {}
@@ -63,7 +63,7 @@ class Picker {
               const position = pieces[i].match(/validate(.*)\(/)
               if (position) {
                 result.position = {
-                  headers:'header',
+                  headers: 'header',
                   query: 'query',
                   body: 'body',
                   param: 'path'
@@ -78,12 +78,16 @@ class Picker {
             } else if (pieces[i].startsWith('to')) {
               result.type = pieces[i].replace('to', '').replace(/\(.*\)/, '').toLowerCase()
             } else if (pieces[i].startsWith('isIn(')) {
-              let matched = pieces[i].replace('isIn(','').replace(')','').replace(/\'/g, '"')
-              result.choices = JSON.parse(matched)
-            } else if (pieces[i].startsWith('gt(') || pieces[i].startsWith('gte(')){
+              let matched = pieces[i].replace('isIn(', '').replace(')', '').replace(/\'/g, '"')
+              try {
+                result.choices = JSON.parse(matched)
+              } catch (e) {
+                result.choices = []
+              }
+            } else if (pieces[i].startsWith('gt(') || pieces[i].startsWith('gte(')) {
               let min = pieces[i].match(/gt[e]?\((.*?)\)/)
               result.min = +min[1]
-            } else if (pieces[i].startsWith('lt(') || pieces[i].startsWith('lte(')){
+            } else if (pieces[i].startsWith('lt(') || pieces[i].startsWith('lte(')) {
               let max = pieces[i].match(/lt[e]?\((.*?)\)/)
               result.max = +max[1]
             }
