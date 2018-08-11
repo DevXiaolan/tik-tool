@@ -29,6 +29,7 @@ class Picker {
                 const f = this.defParams(body[k])
                 f && (_handler.push(f))
               }
+              
               this.handlers[expression.declarations[0].id.name] = {
                 desc: expression.leadingComments ? expression.leadingComments[0].value : '未写注释',
                 params: _handler

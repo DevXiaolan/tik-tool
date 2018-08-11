@@ -97,7 +97,7 @@ function toSwagger(apis) {
         }
       }
     }
-
+    const uniq = {}
     api.handlers.forEach(h => {
       for (let k in h.request) {
         let _tmp = {
@@ -113,7 +113,10 @@ function toSwagger(apis) {
           "in": h.request[k].position,
           "required": !!h.request[k].required
         }
-        swagger.paths[api.path][api.method].parameters.push(_tmp)
+        if(!uniq[`${_tmp.in}.${_tmp.name}`]) {
+          swagger.paths[api.path][api.method].parameters.push(_tmp)
+        }
+        uniq[`${_tmp.in}.${_tmp.name}`] = true
       }
     })
 
