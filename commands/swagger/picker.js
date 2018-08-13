@@ -7,7 +7,11 @@ class Picker {
   constructor(filepath) {
     this.tag = path.basename(filepath)
     this.filepath = filepath
-    this.ast = esprima.parseScript(fs.readFileSync(filepath).toString(), { attachComment: true }).body
+    this.def = {}
+    this.ast = esprima.parseScript(fs.readFileSync(filepath).toString(), {
+      attachComment: true,
+      tolerant: true
+    }).body
     this.run()
   }
 
@@ -29,12 +33,45 @@ class Picker {
                 const f = this.defParams(body[k])
                 f && (_handler.push(f))
               }
-              
+
               this.handlers[expression.declarations[0].id.name] = {
                 desc: expression.leadingComments ? expression.leadingComments[0].value : '未写注释',
                 params: _handler
               }
             }
+          } else if (expression.declarations[0].init.type === 'Literal') {
+            //变量的字面量声明
+            this.def[expression.declarations[0].id.name] = expression.declarations[0].init.value
+          } else if (expression.declarations[0].init.type === 'ObjectExpression') {
+
+            let _id = expression.declarations[0].id.name
+            this.def[_id] = this.def[_id] || {}
+            expression.declarations[0].init.properties.forEach(p => {
+              this.def[_id][p.key.name] = p.value.value
+            })
+          } else if (expression.declarations[0].init.type === 'ArrayExpression') {
+            let _id = expression.declarations[0].id.name
+            this.def[_id] = this.def[_id] || []
+            expression.declarations[0].init.elements.forEach(p => {
+              this.def[_id].push(p.value)
+            })
+          } else if (expression.declarations[0].init.type === 'CallExpression' && expression.declarations[0].init.callee.name === 'require') {
+
+            //require语句
+            const _path = path.resolve(`${path.dirname(this.filepath)}/${expression.declarations[0].init.arguments[0].value}`)
+
+            if (fs.existsSync(`${_path}.js`)) {
+              let _v = require(_path)
+              if (expression.declarations[0].id.type === 'ObjectPattern') {
+                expression.declarations[0].id.properties.forEach(p => {
+                  this.def[p.key.name] = _v[p.key.name]
+                })
+              } else {
+                this.def[expression.declarations[0].id.name] = _v
+              }
+            }
+          } else {
+            //console.log(JSON.stringify(expression.declarations, null, 2))
           }
         }
       }
@@ -45,7 +82,9 @@ class Picker {
     let result = null
     if (line.type === 'VariableDeclaration') {
       const init = line.declarations[0].init
-
+      if (init === null) {
+        return result
+      }
       if (init && init.type === 'CallExpression' && init.callee.type === 'MemberExpression') {
         //找到符合参数校验语法的一行代码
 
@@ -80,10 +119,38 @@ class Picker {
               result.type = pieces[i].replace('to', '').replace(/\(.*\)/, '').toLowerCase()
             } else if (pieces[i].startsWith('isIn(')) {
               let matched = pieces[i].replace('isIn(', '').replace(')', '').replace(/\'/g, '"')
+
               try {
                 result.choices = JSON.parse(matched)
               } catch (e) {
                 result.choices = []
+
+                !((l) => {
+                  const _ast = esprima.parseScript(l)
+                  if (_ast.body[0].expression.arguments[0].type === 'Identifier') {
+                    result.choices = this.def[_ast.body[0].expression.arguments[0].name]
+                    return
+                  }
+                  const elements = _ast.body[0].expression.arguments[0].elements
+                  elements.forEach(el => {
+
+                    if (el.type === 'Literal') {
+                      result.choices.push(el.value)
+                    } else if (el.type === 'Identifier') {
+                      result.choices.push(this.def[el.name] || 'UNKNOWN')
+                    } else if (el.type === 'MemberExpression') {
+                      let v = 'UNKNOWN'
+                      let [obj, prop] = [el.object.name, el.property.value]
+                      v = this.def[obj] ? (this.def[obj][prop] || v) : v
+                      result.choices.push(v)
+                    } else {
+                      console.log(el)
+                      process.exit()
+                    }
+                  })
+
+                })(pieces[i])
+
               }
             } else if (pieces[i].startsWith('gt(') || pieces[i].startsWith('gte(')) {
               let min = pieces[i].match(/gt[e]?\((.*?)\)/)
@@ -95,6 +162,7 @@ class Picker {
           }
         }
       } else {
+
         const code = codegen.generate(init)
         if (code.includes('ctx.headers')) {
           const matched = code.match(/ctx\.headers\.(\w+)/)

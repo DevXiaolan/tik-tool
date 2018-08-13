@@ -16,17 +16,19 @@ module.exports = class Web extends Base {
     const env = this.env
     const pkg = require(`${projectRoot}/tik.json`)
     pkg.name = formatName(pkg.name)
-    const tpl = `cache:
-  untracked: true
-  key: cache_\${CI_COMMIT_REF_SLUG}
-stages:
+    const tpl = `stages:
   - buildwebpack
   - builddocker
   - deploy
+  - report
 
 job_build_webpack:
   stage: buildwebpack
   image: hub.tik:5000/node:tik
+  cache:
+    untracked: true
+    key: \${CI_COMMIT_REF_SLUG}
+    policy: push
   script:
     - npm install --registry=https://registry.npm.taobao.org
     - npm run build
@@ -49,6 +51,10 @@ ${(env => {
 job_build_docker_release:
   stage: builddocker
   image: gitlab/dind
+  cache:
+    untracked: true
+    key: \${CI_COMMIT_REF_SLUG}
+    policy: pull
   only:
     - /^release.*$/
   script:
@@ -60,6 +66,10 @@ job_build_docker_release:
 job_build_docker_stable:
   stage: builddocker
   image: gitlab/dind
+  cache:
+    untracked: true
+    key: \${CI_COMMIT_REF_SLUG}
+    policy: pull
   only:
     - master
   script:
@@ -69,12 +79,29 @@ job_build_docker_stable:
 job_deploy:
   stage: deploy
   image: registry.cn-hangzhou.aliyuncs.com/dev_tool/rancher-cli
+  cache:
+    untracked: true
+    key: \${CI_COMMIT_REF_SLUG}
+    policy: pull
   only:
     - master
   script:
     - rm -f ~/.rancher/cli.json
     - rm -fr node_modules
-    - rancher --url http://172.20.160.7:8080/v2-beta --access-key 3F9EAEABA64D4876F506 --secret-key vyg17c8244obWeB8HoSGeeHVg54LGdTWMVj4yU6V up -d  --pull --force-upgrade --confirm-upgrade --stack ${pkg.group}-${pkg.name}`
+    - rancher --url http://172.20.160.7:8080/v2-beta --access-key 3F9EAEABA64D4876F506 --secret-key vyg17c8244obWeB8HoSGeeHVg54LGdTWMVj4yU6V up -d  --pull --force-upgrade --confirm-upgrade --stack ${pkg.group}-${pkg.name}
+    
+job_report:
+  stage: report
+  image: hub.tik:5000/node:tik
+  cache:
+    untracked: true
+    key: \${CI_COMMIT_REF_SLUG}
+    policy: pull-push
+  when: on_failure
+  script:
+    - curl https://oapi.dingtalk.com/robot/send?access_token=4b6c67515042a6f16ff5799eedf77231ccb785cd1842c28c73c2dd8499113d2f -XPOST -H 'content-type:application/json' -d '{"msgtype":"text","text":{"content":"[${pkg.group}-${pkg.name}] Job Failed. Link:http://172.20.160.7:10080/${pkg.group}/${pkg.name}/pipelines"}}'
+  
+`
 
     fs.writeFileSync(`${projectRoot}/.gitlab-ci.yml`, tpl)
     console.log(`File generated: ${projectRoot}/.gitlab-ci.yml`.blue)

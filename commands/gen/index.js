@@ -76,7 +76,7 @@ const client = async (argv) => {
         content = content.replace('__body__', body.join('\n'))
         content = content.replace('__query__', query.join('\n'))
         content = content.replace('__path__', path)
-        content = content.replace('__argv__', argv.join(','))
+        content = content.replace('__argv__', Array.from(new Set(argv)).join(','))
         return content
       })(resp.paths[path][method]))
     }

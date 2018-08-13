@@ -129,6 +129,7 @@ function toSwagger(apis) {
 
 
 module.exports = (argv) => {
+  
   const projectRoot = process.cwd()
   if (!fs.existsSync(`${projectRoot}/tik.json`)) {
     console.log('tik.json NOT FOUND !'.yellow)
@@ -141,13 +142,15 @@ module.exports = (argv) => {
   const ast = esprima.parseScript(router).body
   const controllers = {}
   const apis = []
-
+ 
   for (let k in ast) {
     const expression = ast[k]
     if (isRequirement(expression)) {
       controllers[expression.declarations[0].id.name] = (new Picker(path.resolve(`${projectRoot}/src/${expression.declarations[0].init.arguments[0].value}.js`))).handlers
     }
+    
     if (isRouter(expression)) {
+      
       const args = expression.expression.arguments
       const method = expression.expression.callee.property.name
       const path = args[0].value
@@ -173,6 +176,7 @@ module.exports = (argv) => {
             break
         }
       }
+      
       apis.push({
         method,
         path,
@@ -181,5 +185,6 @@ module.exports = (argv) => {
     }
   }
 
+  
   toSwagger(apis)
 }

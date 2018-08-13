@@ -47,7 +47,13 @@ switch (command) {
     break
   // 生成swagger tik swagger
   case 'swagger':
-    require('./commands/swagger')(argv)
+    try {
+      require('./commands/swagger')(argv)
+    } catch (e) {
+      //
+      console.log(e)
+      process.exit()
+    }
     break
   // 代码生成器 tik gen {xxx}
   case 'gen':
