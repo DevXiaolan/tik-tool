@@ -33,18 +33,19 @@ job_test:
     - master
   script: 
     - npm install --registry=https://registry.npm.taobao.org
+    - npm run lint
     - npm test
     - cp .env.example .env
     - tik docker
     - rm -fr node_modules
   variables:
 ${(env => {
-  let output = ``
-  for (const k in env) {
-    output += `    ${k}: ${env[k] || '""'}${EOL}`
-  }
-  return output
-})(env)}
+        let output = ``
+        for (const k in env) {
+          output += `    ${k}: ${(['true', 'false'].includes(env[k]) ? `"${env[k]}"` : env[k]) || '""'}${EOL}`
+        }
+        return output
+      })(env)}
 
 job_build_stable:
   stage: build
@@ -72,6 +73,9 @@ job_build_release:
     - docker build -t ${pkg.name}:${pkg.version} .
     - docker tag ${pkg.name}:${pkg.version} hub.tik:5000/${pkg.name}:${pkg.version}
     - docker push hub.tik:5000/${pkg.name}:${pkg.version}
+    - docker login --username=tik-admin@tik registry.cn-hangzhou.aliyuncs.com -p g423QuHLvqrRTY37
+    - docker tag ${pkg.name}:${pkg.version} registry.cn-hangzhou.aliyuncs.com/tik/${pkg.group}-${pkg.name}:${pkg.version}
+    - docker push registry.cn-hangzhou.aliyuncs.com/tik/${pkg.group}-${pkg.name}:${pkg.version}
 
 job_deploy:
   stage: deploy
@@ -124,12 +128,12 @@ services:
     image: ${pkg.name}:stable
     environment:
 ${(env => {
-      let output = ``
-      for (const k in env) {
-        output += `        ${k}: ${env[k] || '""'}${EOL}`
-      }
-      return output
-    })(env)}
+        let output = ``
+        for (const k in env) {
+          output += `        ${k}: ${env[k] || '""'}${EOL}`
+        }
+        return output
+      })(env)}
     stdin_open: true
     external_links:
     - database/mongo:mongo
