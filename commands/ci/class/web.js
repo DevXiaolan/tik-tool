@@ -61,6 +61,10 @@ job_build_docker_release:
     - docker build -t ${pkg.name}:${pkg.version} .
     - docker tag ${pkg.name}:${pkg.version} hub.tik:5000/${pkg.name}:${pkg.version}
     - docker push hub.tik:5000/${pkg.name}:${pkg.version}
+    - docker login --username=tik-admin@tik registry.cn-hangzhou.aliyuncs.com -p g423QuHLvqrRTY37
+    - docker tag ${pkg.name}:${pkg.version} registry.cn-hangzhou.aliyuncs.com/tik/${pkg.group}-${pkg.name}:${pkg.version}
+    - docker push registry.cn-hangzhou.aliyuncs.com/tik/${pkg.group}-${pkg.name}:${pkg.version}
+
     - rm -fr node_modules
 
 job_build_docker_stable:
