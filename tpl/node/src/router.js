@@ -1,8 +1,8 @@
-const router = require('koa-router')()
+const router = require('koa-router')();
 
-const demo = require('./controllers/demo')
+const demo = require('./controllers/demo');
 
-router.get('/', demo.index)
-router.post('/', demo.p)
+router.get('/', demo.index);
+router.post('/', demo.p);
 
-module.exports = router
+module.exports = router;

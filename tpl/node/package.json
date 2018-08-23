@@ -5,19 +5,23 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "dev": "npx nodemon ./bin/boot.js",
+    "dev": "nodemon ./bin/boot.js",
     "start": "node ./bin/boot.js",
-    "cover": "npx nyc ava",
-    "test": "npx ava --verbose && exit 0"
+    "cover": "nyc ava",
+    "test": "ava --verbose && exit 0",
+    "lint": "eslint bin middlewares src test utils",
+    "lint:fix": "npm run lint -- --fix",
+    "precommit": "lint-staged && npm run lint",
+    "prepush": "npm test",
+    "format": "prettier --write '*/*.js' '*/!(node_modules)/**/*.js'",
+    "commitmsg": "commitlint -E GIT_PARAMS"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "ava": "^0.25.0",
     "colors": "^1.2.3",
     "dotenv": "^5.0.1",
-    "eslint": "^4.19.1",
     "ioredis": "^3.2.2",
     "koa": "^2.5.1",
     "koa-bodyparser": "^4.2.0",
@@ -26,13 +30,39 @@
     "koa2-cors": "^2.0.5",
     "log4js": "^2.7.0",
     "mongoose": "^5.0.17",
-    "nyc": "^11.7.1",
     "request-promise": "^4.2.2",
     "rightpad": "^1.0.1",
     "superkoa": "^1.0.3",
     "uuid": "^3.2.1"
   },
   "devDependencies": {
-    "nodemon": "^1.17.4"
+    "ava": "^0.25.0",
+    "commitlint": "^7.0.0",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-config-prettier": "^3.0.1",
+    "eslint-plugin-import": "^2.14.0",
+    "husky": "^0.14.3",
+    "lint-staged": "^7.2.2",
+    "nodemon": "^1.17.4",
+    "nyc": "^11.7.1",
+    "prettier": "^1.14.2",
+    "sinon": "^6.1.5"
+  },
+  "lint-staged": {
+    "*.{js,json,css,md}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "prettier": {
+    "printWidth": 80,
+    "semi": true,
+    "tabWidth": 2,
+    "singleQuote": true,
+    "trailingComma": "none",
+    "bracketSpacing": true,
+    "jsxBracketSameLine": false,
+    "arrowParens": "avoid"
   }
 }

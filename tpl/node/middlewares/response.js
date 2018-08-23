@@ -1,5 +1,4 @@
-
-const response = require('../utils/response')
+const response = require('../utils/response');
 
 /**
  * 简化返回参数，去掉 ctx
@@ -8,12 +7,11 @@ const response = require('../utils/response')
  * @returns {Promise<*>}
  */
 module.exports = async (ctx, next) => {
-  ctx.success = function (...args) {
-    return response.success(ctx, ...args)
-  }
-  ctx.error = function (...args) {
-    return response.error(ctx, ...args)
-  }
-  return await next()
-}
-
+  ctx.success = function(...args) {
+    return response.success(ctx, ...args);
+  };
+  ctx.error = function(...args) {
+    return response.error(ctx, ...args);
+  };
+  return await next();
+};

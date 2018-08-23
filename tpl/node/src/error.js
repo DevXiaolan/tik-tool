@@ -22,4 +22,4 @@ module.exports = {
     code: 404001,
     message: 'fooooo'
   }
-}
+};
