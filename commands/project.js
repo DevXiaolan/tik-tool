@@ -96,10 +96,19 @@ project.create = async (argv) => {
       return
     }
   }
+  // 创建项目后git init
+  if (!shell.which('git')) {
+    shell.echo('Requires git to init project.')
+  } else {
+    shell.cd(projectName)
+    if (shell.exec('git init .').code !== 0) {
+      Err('Git Init Project Failed')
+    }
+  }
 }
 
 project.release = async (argv) => {
-  
+
   if (!fs.existsSync(`${process.cwd()}/tik.json`)) {
     console.log('tik.json NOT FOUND !'.yellow)
     process.exit()
