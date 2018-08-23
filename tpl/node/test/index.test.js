@@ -1,4 +1,3 @@
-/* eslint-disable */
 require('dotenv').load('../.env')
 process.env.MONGO_DBNAME = 'tikcoin_test'
 const app = require('../app')
@@ -13,11 +12,9 @@ test.cb('demo', t => {
     .expect('Content-Type', /json/)
     .expect(200, (err, res) => {
       t.ifError(err)
-      if (res.body.code !== 0) { 
-        throw new Error(JSON.stringify(res.body)) 
+      if (res.body.code !== 0) {
+        throw new Error(JSON.stringify(res.body))
       }
       t.end()
     })
 })
-
-/* eslint-enable */
