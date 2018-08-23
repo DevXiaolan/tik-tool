@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
 const CONFIG = {
   // 数据库
@@ -10,11 +10,14 @@ const CONFIG = {
   // host
   HOST: process.env.MONGO_HOST,
   // 端口
-  PORT: process.env.MONGO_PORT,
-}
+  PORT: process.env.MONGO_PORT
+};
 
-mongoose.Promise = global.Promise
+mongoose.Promise = global.Promise;
 
-mongoose.connect(`mongodb://${CONFIG.HOST}:${CONFIG.PORT}/${CONFIG.NAME}`, { useNewUrlParser: true })
+mongoose.connect(
+  `mongodb://${CONFIG.HOST}:${CONFIG.PORT}/${CONFIG.NAME}`,
+  { useNewUrlParser: true }
+);
 
-module.exports = mongoose
+module.exports = mongoose;

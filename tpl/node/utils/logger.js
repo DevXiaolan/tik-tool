@@ -1,18 +1,17 @@
-const { hostname } = require('os')
-const log4js = require('log4js')
+const { hostname } = require('os');
+const log4js = require('log4js');
 
-log4js.addLayout('json', function (config) {
-  return function (logEvent) {
+log4js.addLayout('json', () => {
+  return function(logEvent) {
     return JSON.stringify({
       app: process.env.APP_NAME,
       time: logEvent.startTime,
       level: logEvent.level.levelStr,
       data: logEvent.data[0],
       host: hostname()
-    })
-  }
-})
-
+    });
+  };
+});
 
 log4js.configure({
   appenders: {
@@ -33,6 +32,6 @@ log4js.configure({
       level: 'info'
     }
   }
-})
+});
 
-module.exports = log4js
+module.exports = log4js;

@@ -15,9 +15,9 @@ module.exports = function commonFiledPlugin(schema) {
       type: Number,
       select: false
     }
-  })
-  schema.pre('save', function(next){
-    this.updatedAt = Date.now()
-    next()
-  })
-}
+  });
+  schema.pre('save', function(next) {
+    this.updatedAt = Date.now();
+    next();
+  });
+};
