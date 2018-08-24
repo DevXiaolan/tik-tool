@@ -164,8 +164,17 @@ class Picker {
       } else {
 
         const code = codegen.generate(init)
-        if (code.includes('ctx.headers')) {
-          const matched = code.match(/ctx\.headers\.(\w+)/)
+        if (code === 'ctx.headers' && line.declarations[0].id.type === 'ObjectPattern') {
+          if (line.declarations[0].id.properties.length) {
+            line.declarations[0].id.properties.forEach(p => {
+              result = {}
+              result.desc = line.leadingComments && line.leadingComments[0] && line.leadingComments[0].value
+              result.position = 'headers'
+              result.name = p.value.name
+            })
+          }
+        } else if (code.includes('ctx.headers')) {
+          let matched = code.match(/ctx\.headers\.(\w+)/)
           if (matched) {
             result = {}
             result.desc = line.leadingComments && line.leadingComments[0] && line.leadingComments[0].value
