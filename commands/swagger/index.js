@@ -111,6 +111,7 @@ function toSwagger(apis) {
           "name": h.request[k].name,
           "description": h.request[k].desc || '未写注释',
           "in": h.request[k].position,
+          "default":h.request[k].default,
           "required": !!h.request[k].required
         }
         if(!uniq[`${_tmp.in}.${_tmp.name}`]) {

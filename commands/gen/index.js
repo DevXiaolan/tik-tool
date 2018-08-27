@@ -43,7 +43,7 @@ const client = async (argv) => {
         const query = ['{']
         const body = ['{']
         f.parameters.forEach(p => {
-          argv.push(p.name)
+          argv.push(`${p.name}${p.default?`=${p.default}`:''}`)
           switch (p.in) {
             case 'body':
               body.push(p.name + ',')

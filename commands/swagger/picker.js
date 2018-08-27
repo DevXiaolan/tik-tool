@@ -158,6 +158,9 @@ class Picker {
             } else if (pieces[i].startsWith('lt(') || pieces[i].startsWith('lte(')) {
               let max = pieces[i].match(/lt[e]?\((.*?)\)/)
               result.max = +max[1]
+            } else if (pieces[i].startsWith('defaultTo(')) {
+              const df = pieces[i].match(/defaultTo\((.*?)\)/)
+              result.default = df ? df[1] : ''
             }
           }
         }

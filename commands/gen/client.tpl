@@ -1,10 +1,10 @@
 const request = require('request-promise')
 
 class __Name__ {
-  constructor(traceId) {
+  constructor(traceId, options={}) {
     this.host = process.env.__NAME___HOST
     this.traceId = traceId
-    this.timeout = process.env.API_TIMEOUT || 3000
+    this.timeout = options.API_TIMEOUT || 3000
   }
 
   //__FUNC__
