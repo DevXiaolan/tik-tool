@@ -10,7 +10,7 @@ async __name__(__argv__){
     },
     body: __body__,
     qs: __query__,
-    timeout: process.env.API_TIMEOUT || 3000,
+    timeout: this.timeout || 3000,
     json: true
   })
   if (resp.code!==0){

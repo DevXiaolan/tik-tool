@@ -4,6 +4,7 @@ class __Name__ {
   constructor(traceId) {
     this.host = process.env.__NAME___HOST
     this.traceId = traceId
+    this.timeout = process.env.API_TIMEOUT || 3000
   }
 
   //__FUNC__
