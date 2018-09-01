@@ -33,7 +33,6 @@ job_test:
     - master
   script: 
     - npm install --registry=https://registry.npm.taobao.org
-    - npm run lint
     - npm test
     - cp .env.example .env
     - tik docker

@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
 const CONFIG = {
   // 数据库
@@ -10,14 +10,25 @@ const CONFIG = {
   // host
   HOST: process.env.MONGO_HOST,
   // 端口
-  PORT: process.env.MONGO_PORT
-};
+  PORT: process.env.MONGO_PORT,
+  //host2
+  HOST_SLAVE: process.env.MONGO_HOST_SLAVE,
+  //port2
+  PORT_SLAVE: process.env.MONGO_PORT_SLAVE,
+}
+console.log(CONFIG)
+mongoose.Promise = global.Promise
 
-mongoose.Promise = global.Promise;
+if (CONFIG.HOST_SLAVE) {
+  mongoose.connect(`mongodb://${CONFIG.USERNAME ? `${CONFIG.USERNAME}:${CONFIG.PASSWORD}@` : ''}${CONFIG.HOST}:${CONFIG.PORT},${CONFIG.HOST_SLAVE}:${CONFIG.PORT_SLAVE}/${CONFIG.NAME}?replicaSet=mgset-8371945`, {
+    useNewUrlParser: true,
+  })
+} else {
+  mongoose.connect(`mongodb://${CONFIG.USERNAME ? `${CONFIG.USERNAME}:${CONFIG.PASSWORD}@` : ''}${CONFIG.HOST}:${CONFIG.PORT}/${CONFIG.NAME}`, {
+    useNewUrlParser: true,
+  })
+}
 
-mongoose.connect(
-  `mongodb://${CONFIG.HOST}:${CONFIG.PORT}/${CONFIG.NAME}`,
-  { useNewUrlParser: true }
-);
 
-module.exports = mongoose;
+
+module.exports = mongoose
