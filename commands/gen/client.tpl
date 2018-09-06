@@ -8,18 +8,25 @@ class __Name__ {
   }
 
   async ping() {
-    const resp = await request({
+    let resp
+    try {
+      resp = await request({
       uri: `${this.host}/ping`,
       method: 'get',
       headers: {
-        'content-type': 'application/json',
-        'trace-id': this.traceId
-        //__headers__
-      },
-      qs: {},
-      timeout: this.timeout || 3000,
-      json: true
-    });
+          'content-type': 'application/json',
+          'trace-id': this.traceId
+          //__headers__
+        },
+        qs: {},
+        timeout: this.timeout || 3000,
+        json: true
+      });
+    } catch(e) {
+      return {
+        error: `${this.host} off line`
+      }
+    }
     return resp.data;
   }
 
