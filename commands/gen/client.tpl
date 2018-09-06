@@ -20,9 +20,6 @@ class __Name__ {
       timeout: this.timeout || 3000,
       json: true
     });
-    if (resp.code !== 0) {
-      throw resp;
-    }
     return resp.data;
   }
 
