@@ -24,7 +24,7 @@ module.exports = class Cronjob extends Base {
 
 job_test:
   stage: test
-  image: hub.tik:5000/node:tik
+  image: registry.cn-hangzhou.aliyuncs.com/tik/node:tik
   cache:
     untracked: true
     key: \${CI_COMMIT_REF_SLUG}
@@ -70,8 +70,6 @@ job_build_release:
   script:
     - rm -f .env
     - docker build -t ${pkg.name}:${pkg.version} .
-    - docker tag ${pkg.name}:${pkg.version} hub.tik:5000/${pkg.name}:${pkg.version}
-    - docker push hub.tik:5000/${pkg.name}:${pkg.version}
     - docker login --username=tik-admin@tik registry.cn-hangzhou.aliyuncs.com -p g423QuHLvqrRTY37
     - docker tag ${pkg.name}:${pkg.version} registry.cn-hangzhou.aliyuncs.com/tik/${pkg.group}-${pkg.name}:${pkg.version}
     - docker push registry.cn-hangzhou.aliyuncs.com/tik/${pkg.group}-${pkg.name}:${pkg.version}
