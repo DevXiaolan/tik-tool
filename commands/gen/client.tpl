@@ -7,6 +7,25 @@ class __Name__ {
     this.timeout = options.API_TIMEOUT || 3000
   }
 
+  async ping() {
+    const resp = await request({
+      uri: `${this.host}/ping`,
+      method: 'get',
+      headers: {
+        'content-type': 'application/json',
+        'trace-id': this.traceId
+        //__headers__
+      },
+      qs: {},
+      timeout: this.timeout || 3000,
+      json: true
+    });
+    if (resp.code !== 0) {
+      throw resp;
+    }
+    return resp.data;
+  }
+
   //__FUNC__
 }
 
