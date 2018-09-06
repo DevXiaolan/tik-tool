@@ -1,3 +1,4 @@
 docker build -t node:tik .
-docker tag node:tik hub.tik:5000/node:tik
-docker push hub.tik:5000/node:tik
+docker login --username=tik-admin@tik registry.cn-hangzhou.aliyuncs.com -p g423QuHLvqrRTY37
+docker tag node:tik registry.cn-hangzhou.aliyuncs.com/tik/node:tik
+docker push registry.cn-hangzhou.aliyuncs.com/tik/node:tik
