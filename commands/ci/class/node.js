@@ -89,7 +89,7 @@ job_deploy:
 
 job_report:
   stage: report
-  image: hub.tik:5000/node:tik
+  image: registry.cn-hangzhou.aliyuncs.com/tik/node:tik
   cache:
     untracked: true
     key: \${CI_COMMIT_REF_SLUG}

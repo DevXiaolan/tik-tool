@@ -22,7 +22,7 @@ module.exports = class Web extends Base {
   - deploy
   - report
 
-job_build_webpack:
+job_build_webpack_master:
   stage: buildwebpack
   image: registry.cn-hangzhou.aliyuncs.com/tik/node:tik
   cache:
@@ -37,16 +37,74 @@ job_build_webpack:
     - tik docker
   only:
     - master
-    - /^release.*$/
+  artifacts:
+    name: \${CI_COMMIT_REF_SLUG}
+    paths: 
+      - dist
+      - docker-compose.yml
+      - rancher-compose.yml
+    expire_in: 10 mins
   variables:
     TIME_STAMP: ${Date.now()}
 ${(env => {
         let output = ``
         for (const k in env) {
+          if(k==='NODE_ENV'){
+            env[k] = 'development'
+          }
           output += `    ${k}: ${env[k] || '""'}${EOL}`
         }
         return output
       })(env)}
+
+job_build_webpack_release:
+  stage: buildwebpack
+  image: registry.cn-hangzhou.aliyuncs.com/tik/node:tik
+  cache:
+    untracked: true
+    key: \${CI_COMMIT_REF_SLUG}
+    policy: push
+  script:
+    - NODE_ENV=development npm install --registry=https://registry.npm.taobao.org
+    - npm run build
+    - ls
+    - rm -fr node_modules
+    - cp .env.example .env
+    - tik docker
+  only:
+    - /^release.*$/
+  artifacts:
+    name: \${CI_COMMIT_REF_SLUG}
+    paths: 
+      - dist
+    expire_in: 10 mins
+  variables:
+    TIME_STAMP: ${Date.now()}
+${(env => {
+        let output = ``
+        for (const k in env) {
+          if(k==='NODE_ENV'){
+            env[k] = 'production'
+          }
+          output += `    ${k}: ${env[k] || '""'}${EOL}`
+        }
+        return output
+      })(env)}
+
+job_build_docker_master:
+  stage: builddocker
+  image: gitlab/dind
+  cache:
+    untracked: true
+    key: \${CI_COMMIT_REF_SLUG}
+    policy: pull
+  only:
+    - master
+  script:
+    - docker build -t ${pkg.name}:stable .
+    - rm -fr node_modules
+  dependencies:
+    - job_build_webpack_master  
 
 job_build_docker_release:
   stage: builddocker
@@ -62,21 +120,9 @@ job_build_docker_release:
     - docker login --username=tik-admin@tik registry.cn-hangzhou.aliyuncs.com -p g423QuHLvqrRTY37
     - docker tag ${pkg.name}:${pkg.version} registry.cn-hangzhou.aliyuncs.com/tik/${pkg.group}-${pkg.name}:${pkg.version}
     - docker push registry.cn-hangzhou.aliyuncs.com/tik/${pkg.group}-${pkg.name}:${pkg.version}
-
     - rm -fr node_modules
-
-job_build_docker_stable:
-  stage: builddocker
-  image: gitlab/dind
-  cache:
-    untracked: true
-    key: \${CI_COMMIT_REF_SLUG}
-    policy: pull
-  only:
-    - master
-  script:
-    - docker build -t ${pkg.name}:stable .
-    - rm -fr node_modules  
+  dependencies:
+    - job_build_webpack_release  
 
 job_deploy:
   stage: deploy
@@ -87,6 +133,8 @@ job_deploy:
     policy: pull
   only:
     - master
+  dependencies:
+    - job_build_webpack_master
   script:
     - rm -f ~/.rancher/cli.json
     - rm -fr node_modules
@@ -94,7 +142,7 @@ job_deploy:
     
 job_report:
   stage: report
-  image: hub.tik:5000/node:tik
+  image: registry.cn-hangzhou.aliyuncs.com/tik/node:tik
   cache:
     untracked: true
     key: \${CI_COMMIT_REF_SLUG}
