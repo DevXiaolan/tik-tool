@@ -102,6 +102,9 @@ job_build_docker_master:
     - master
   script:
     - docker build -t ${pkg.name}:stable .
+    - docker login --username=tik-admin@tik registry.cn-hangzhou.aliyuncs.com -p g423QuHLvqrRTY37
+    - docker tag ${pkg.name}:stable registry.cn-hangzhou.aliyuncs.com/tik/${pkg.group}-${pkg.name}:stable
+    - docker push registry.cn-hangzhou.aliyuncs.com/tik/${pkg.group}-${pkg.name}:stable
     - rm -fr node_modules
   dependencies:
     - job_build_webpack_master  
@@ -176,7 +179,7 @@ job_report:
       `version: '2'
 services:
   ${pkg.name || ''}:
-    image: ${pkg.name}:stable
+    image: registry.cn-hangzhou.aliyuncs.com/tik/${pkg.group}-${pkg.name}:stable
     environment:
 ${(env => {
       let output = ``
