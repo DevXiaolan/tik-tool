@@ -6,11 +6,11 @@ module.exports = async (ctx, next) => {
     info: data => {
       logger.info({ data, traceId: ctx.state.traceId });
     },
+    warn: data => {
+      logger.warn({ data, traceId: ctx.state.traceId });
+    },
     error: data => {
       logger.error({ data, traceId: ctx.state.traceId });
-    },
-    fatal: data => {
-      logger.fatal({ data, traceId: ctx.state.traceId });
     }
   };
   ctx.logger.info({
@@ -25,8 +25,6 @@ module.exports = async (ctx, next) => {
   await next();
   ctx.logger.info({
     type: 'OUT',
-    method: ctx.request.method,
-    url: ctx.request.url,
     status: ctx.response.status,
     message: ctx.response.message,
     traceId: ctx.state.traceId,
