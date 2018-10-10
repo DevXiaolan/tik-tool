@@ -88,7 +88,7 @@ job_deploy:
     - master
   script:
     - rm -f ~/.rancher/cli.json
-    - rancher --url http://172.20.160.7:8080/v2-beta --access-key A7B232C96113121C64A2 --secret-key 8mAJL2iDVr7k5BT7Ws32h41MyfJY1ubWBGBAM8Ub -d  --pull --force-upgrade --confirm-upgrade --stack ${pkg.group}-${pkg.name}
+    - rancher --url http://172.20.160.7:8080/v2-beta --access-key A7B232C96113121C64A2 --secret-key 8mAJL2iDVr7k5BT7Ws32h41MyfJY1ubWBGBAM8Ub up -d  --pull --force-upgrade --confirm-upgrade --stack ${pkg.group}-${pkg.name}
    
 job_report:
   stage: report
