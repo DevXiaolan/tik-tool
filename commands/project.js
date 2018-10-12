@@ -26,7 +26,7 @@ project.create = async (argv) => {
   {
     type: 'list',
     name: 'type',
-    choices: ['node', 'cronjob', 'web', 'go'],
+    choices: ['node', 'cronjob', 'web', 'go', 'php'],
     message: 'Project Type:',
     default: 'node'
   }])
