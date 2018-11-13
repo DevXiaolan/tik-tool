@@ -32,8 +32,6 @@ job_test:
   only:
     - master
   script: 
-    - npm install --registry=https://registry.npm.taobao.org
-    - npm test
     - cp .env.example .env
     - tik docker
     - rm -fr node_modules
