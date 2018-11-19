@@ -139,8 +139,6 @@ ${(env => {
     volumes:
     - /tmp:/tmp
     tty: true
-    ports:
-    - ${pkg.appId}:3000/tcp
   `
     //todo 后续要自动识别服务依赖 加到 external_links
     fs.writeFileSync(`${projectRoot}/docker-compose.yml`, tpl)
