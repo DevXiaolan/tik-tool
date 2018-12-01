@@ -11,9 +11,9 @@ const CONFIG = {
   HOST: process.env.MONGO_HOST,
   // 端口
   PORT: process.env.MONGO_PORT,
-  //host2
+  // host2
   HOST_SLAVE: process.env.MONGO_HOST_SLAVE,
-  //port2
+  // port2
   PORT_SLAVE: process.env.MONGO_PORT_SLAVE,
 }
 console.log(CONFIG)
