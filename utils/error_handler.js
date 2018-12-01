@@ -3,5 +3,5 @@ const { EOL } = require('os');
 
 module.exports = (v) => {
   console.log(`${EOL}${'ERROR:'.red}  ${JSON.stringify(v).yellow}${EOL}`);
-  process.exit();
+  process.exit(-1);
 };
