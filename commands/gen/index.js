@@ -36,6 +36,9 @@ const client = async (argv) => {
     for (let method in resp.paths[path]) {
       content = content.replace('//__FUNC__', (f => {
         let content = fs.readFileSync(Path.resolve(`${__dirname}/func.tpl`)).toString();
+        
+        content = content.replace('__mock__', JSON.stringify(f.responses['200'].example.data, null ,2));
+
         content = content.replace('__name__', f.operationId);
 
         content = content.replace('__METHOD__', method);

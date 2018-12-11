@@ -1,4 +1,7 @@
 async __name__(__argv__){
+  if (process.env.NODE_ENV === 'test:local') {
+    return __mock__;
+  }
   //enums
   const resp = await request({
     uri: `${this.host}__path__`,
