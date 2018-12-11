@@ -95,8 +95,8 @@ const client = async (argv) => {
     name: resp.info.name,
     version: resp.info.version,
   };
-  fs.writeFileSync(`${srcRoot}/tik.json`, JSON.stringify(tikConf, null, 2));
-  console.log(`File Updated: ${`${srcRoot}/tik.json`.yellow}`);
+  fs.writeFileSync(`${projectRoot}/tik.json`, JSON.stringify(tikConf, null, 2));
+  console.log(`File Updated: ${`${projectRoot}/tik.json`.yellow}`);
   process.exit();
 };
 
