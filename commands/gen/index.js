@@ -88,13 +88,15 @@ const client = async (argv) => {
   fs.writeFileSync(`${srcRoot}/clients/${resp.info.name}.js`, content);
   console.log(`File generated: ${`${srcRoot}/clients/${resp.info.name}.js`.green}`);
   fs.writeFileSync(`${srcRoot}/clients/${resp.info.name}.json`, JSON.stringify(resp, null, 2));
-  console.log(`File generated: ${`${srcRoot}/clients/${resp.info.name}.json`.yellow}`);
+  console.log(`File generated: ${`${srcRoot}/clients/${resp.info.name}.json`.green}`);
   //update tik.json
   tikConf.deps = tikConf.deps || {};
   tikConf.deps[appId] = {
     name: resp.info.name,
     version: resp.info.version,
   };
+  fs.writeFileSync(`${srcRoot}/tik.json`, JSON.stringify(tikConf, null, 2));
+  console.log(`File Updated: ${`${srcRoot}/tik.json`.yellow}`);
   process.exit();
 };
 
