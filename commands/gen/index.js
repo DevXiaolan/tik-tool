@@ -8,10 +8,12 @@ const { EOL } = require('os');
 
 const client = async (argv) => {
   const projectRoot = process.cwd();
+  
   if (!fs.existsSync(`${projectRoot}/tik.json`)) {
     console.log('tik.json NOT FOUND !'.yellow);
     process.exit();
   }
+  const tikConf = require(`${projectRoot}/tik.json`);
   const srcRoot = `${projectRoot}/src`;
   if (!fs.existsSync(`${srcRoot}/clients`)) {
     shell.mkdir(`${srcRoot}/clients`);
@@ -87,6 +89,12 @@ const client = async (argv) => {
   console.log(`File generated: ${`${srcRoot}/clients/${resp.info.name}.js`.green}`);
   fs.writeFileSync(`${srcRoot}/clients/${resp.info.name}.json`, JSON.stringify(resp, null, 2));
   console.log(`File generated: ${`${srcRoot}/clients/${resp.info.name}.json`.yellow}`);
+  //update tik.json
+  tikConf.deps = tikConf.deps || {};
+  tikConf.deps[appId] = {
+    name: resp.info.name,
+    version: resp.info.version,
+  };
   process.exit();
 };
 
