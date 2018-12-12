@@ -18,11 +18,12 @@ const client = async (argv) => {
   if (!fs.existsSync(`${srcRoot}/clients`)) {
     shell.mkdir(`${srcRoot}/clients`);
   }
-  const appId = readline.question('输入APP_ID, 如 2015  :  '.yellow);
+  let appId = readline.question('输入APP_ID, 如 2015  :  '.yellow);
   let resp;
   if (fs.existsSync(appId)) {
     //本地文件模式
     resp = require(appId);
+    appId = resp.info.appId;
   } else {
     resp = await request({
       uri: `http://172.20.160.7:${appId.replace(/\s/g, '')}/v1.0.0/swagger`,
