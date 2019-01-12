@@ -92,7 +92,7 @@ function toSwagger(apis) {
             && oldSwagger.paths[api.path]
             && oldSwagger.paths[api.path][api.method]
             && oldSwagger.paths[api.path][api.method].responses
-            && (oldSwagger.paths[api.path][api.method].responses['200'].example.data || oldSwagger.paths[api.path][api.method].responses['200'].example['application/json'].data)
+            && (oldSwagger.paths[api.path][api.method].responses['200'].example.data || oldSwagger.paths[api.path][api.method].responses['200'].example.data)
             || {}
         }
       }
@@ -147,7 +147,20 @@ module.exports = (argv) => {
   for (let k in ast) {
     const expression = ast[k];
     if (isRequirement(expression)) {
-      controllers[expression.declarations[0].id.name] = (new Picker(path.resolve(`${projectRoot}/src/${expression.declarations[0].init.arguments[0].value}.js`))).handlers;
+      if(expression.declarations[0].id.type === 'ObjectPattern'){
+        // 一个handler
+        const handlers = (new Picker(path.resolve(`${projectRoot}/src/${expression.declarations[0].init.arguments[0].value}`))).handlers;
+        
+        expression.declarations[0].id.properties.forEach(p=>{
+          controllers[p.value.name] = handlers[p.key.name];
+        
+        });
+       
+      }else if(expression.declarations[0].id.type === 'Identifier'){
+        // 整个controller
+        controllers[expression.declarations[0].id.name] = (new Picker(path.resolve(`${projectRoot}/src/${expression.declarations[0].init.arguments[0].value}`))).handlers;
+      }
+      
     }
     
     if (isRouter(expression)) {
@@ -156,7 +169,7 @@ module.exports = (argv) => {
       const method = expression.expression.callee.property.name;
       const path = args[0].value;
       const handlers = [];
-
+      
       for (let i = 1; i < args.length; i++) {
         switch (args[i].type) {
         case 'Identifier':

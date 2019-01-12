@@ -8,7 +8,7 @@ job_build:
   stage: build
   image: gitlab/dind
   script:
-    - sed -i 's/{version}/1.3.10/' ./dockerfile/node-with-tool/Dockerfile
+    - sed -i 's/{version}/1.3.11/' ./dockerfile/node-with-tool/Dockerfile
     - cd ./dockerfile/node-with-tool/
     - ./build
   only:

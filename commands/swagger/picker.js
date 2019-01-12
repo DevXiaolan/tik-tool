@@ -6,7 +6,14 @@ const path = require('path');
 class Picker {
   constructor(filepath) {
     this.tag = path.basename(filepath);
+    if (!fs.existsSync(`${filepath}.js`)) {
+      filepath += '/index.js';
+    } else {
+      filepath += '.js';
+    }
+    
     this.filepath = filepath;
+    
     this.def = {};
     this.ast = esprima.parseScript(fs.readFileSync(filepath).toString(), {
       attachComment: true,
@@ -18,7 +25,6 @@ class Picker {
   run() {
     const ast = this.ast;
     this.handlers = {};
-
     for (let k in ast) {
       const expression = ast[k];
       if (expression.type === 'VariableDeclaration') {
@@ -118,9 +124,9 @@ class Picker {
             } else if (pieces[i].startsWith('to')) {
               result.type = pieces[i].replace('to', '').replace(/\(.*\)/, '').toLowerCase();
             } else if (pieces[i].startsWith('isIn(')) {
-              
+
               let matched = pieces[i].replace('isIn(', '').replace(')', '').replace(/\'/g, '"');
-              
+
               try {
                 result.choices = JSON.parse(matched);
               } catch (e) {
