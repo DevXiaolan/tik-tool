@@ -71,7 +71,7 @@ case 'upgrade':
   console.log(`current version: ${pkg.version.green}`);
   console.log('☕️ 🍞 about uograde ... 🐌 ');
 
-  if (0 === shell.exec('npm i -g tik-tool --registry=http://172.20.160.7:4873').code) {
+  if (0 === shell.exec('npm i -g tik-tool --registry=http://172.20.160.7:4874').code) {
     delete require.cache[require.resolve('./package.json')];
     pkg = require('./package.json');
     console.log(`latest version: ${pkg.version.green}`);
