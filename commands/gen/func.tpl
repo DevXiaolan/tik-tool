@@ -8,6 +8,7 @@ async __name__(__argv__){
     method: '__METHOD__',
     headers: {
       'content-type': 'application/json',
+      'appid': this.appid,
       'trace-id': this.traceId,
       //__headers__
     },

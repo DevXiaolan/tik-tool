@@ -140,6 +140,7 @@ module.exports = (argv) => {
     Err('router not found.');
   }
   const router = fs.readFileSync(`${projectRoot}/src/router.js`).toString();
+  
   const ast = esprima.parseScript(router).body;
   const controllers = {};
   const apis = [];

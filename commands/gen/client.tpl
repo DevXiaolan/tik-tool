@@ -2,6 +2,7 @@ const request = require('request-promise')
 
 class __Name__ {
   constructor(traceId, options={}) {
+    this.appid = process.env.APP_ID
     this.host = process.env.__NAME___HOST
     this.traceId = traceId
     this.timeout = options.API_TIMEOUT || 3000
@@ -15,6 +16,7 @@ class __Name__ {
       method: 'get',
       headers: {
           'content-type': 'application/json',
+          'appid': this.appid,
           'trace-id': this.traceId
           //__headers__
         },

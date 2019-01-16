@@ -13,6 +13,8 @@ module.exports = class Node extends Base {
 
   gitlabCI() {
     const projectRoot = this.projectRoot;
+    const hasSubMod = fs.existsSync(`${projectRoot}/.gitmodules`);
+    
     const env = this.env;
     const pkg = require(`${projectRoot}/tik.json`);
     pkg.name = formatName(pkg.name);
@@ -30,7 +32,11 @@ job_test:
     key: \${CI_COMMIT_REF_SLUG}
     policy: push
   only:
-    - master
+    - master${hasSubMod?`
+  before_script:
+    - git submodule sync --recursive
+    - git submodule update --init --recursive
+  `:''}
   script: 
     - cp .env.example .env
     - tik deps
@@ -53,7 +59,10 @@ job_build_stable:
     key: \${CI_COMMIT_REF_SLUG}
     policy: pull
   only:
-    - master
+    - master${hasSubMod?`
+  before_script:
+    - git submodule sync --recursive
+    - git submodule update --init --recursive`:''}
   script:
     - docker build -t ${pkg.name}:stable .
     - docker login --username=tik-admin@tik registry.cn-hangzhou.aliyuncs.com -p g423QuHLvqrRTY37
@@ -68,7 +77,10 @@ job_build_release:
     key: \${CI_COMMIT_REF_SLUG}
     policy: pull
   only:
-    - /^release.*$/
+    - /^release.*$/${hasSubMod?`
+  before_script:
+    - git submodule sync --recursive
+    - git submodule update --init --recursive`:''}
   script:
     - rm -f .env
     - docker build -t ${pkg.name}:${pkg.version} .
@@ -84,7 +96,10 @@ job_deploy:
     key: \${CI_COMMIT_REF_SLUG}
     policy: pull
   only:
-    - master
+    - master${hasSubMod?`
+  before_script:
+    - git submodule sync --recursive
+    - git submodule update --init --recursive`:''}
   script:
     - rm -f ~/.rancher/cli.json
     - rancher --url http://172.20.160.7:8080/v2-beta --access-key A7B232C96113121C64A2 --secret-key 8mAJL2iDVr7k5BT7Ws32h41MyfJY1ubWBGBAM8Ub up -d  --pull --force-upgrade --confirm-upgrade --stack ${pkg.group}-${pkg.name}
