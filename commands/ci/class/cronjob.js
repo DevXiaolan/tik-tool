@@ -39,7 +39,6 @@ job_test:
     - npm install --registry=https://registry.npm.taobao.org
     - npm test
     - cp .env.example .env
-    - tik deps
     - tik docker
   variables:
 ${(env => {
