@@ -1,6 +1,6 @@
 ### Install
 
-> npm i -g tik-tool --registry=http://172.20.160.7:4873
+> npm i -g tik-tool --registry=http://47.110.247.228:4873
 
 ### help
 

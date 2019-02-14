@@ -65,7 +65,7 @@ function toSwagger(apis) {
       ...tikConf,
       title: `${tikConf.group}/${tikConf.name}`,
     },
-    host: `172.20.160.7:${tikConf.appId}`,
+    host: `47.110.247.228:${tikConf.appId}`,
     basePath: `/v${tikConf.version}`,
     schemes: ['http'],
     paths: {},

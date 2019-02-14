@@ -26,7 +26,7 @@ const client = async (argv) => {
     appId = resp.info.appId;
   } else {
     resp = await request({
-      uri: `http://172.20.160.7:${appId.replace(/\s/g, '')}/v1.0.0/swagger`,
+      uri: `http://47.110.247.228:${appId.replace(/\s/g, '')}/v1.0.0/swagger`,
       method: 'GET',
       json: true
     });

@@ -3,7 +3,7 @@ const colors = require('colors');
 
 
 module.exports = async () => {
-  const resp = await request.get('http://172.20.160.7:4873/-/search/tik-tool').json();
+  const resp = await request.get('http://47.110.247.228:4873/-/search/tik-tool').json();
   const pkg = require('../package.json');
   if (pkg.version !== resp.version) {
     console.log('='.repeat(64).red);

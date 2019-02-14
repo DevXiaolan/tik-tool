@@ -85,7 +85,7 @@ job_deploy:
     - master
   script:
     - rm -f ~/.rancher/cli.json
-    - rancher --url http://172.20.160.7:8080/v2-beta --access-key A7B232C96113121C64A2 --secret-key 8mAJL2iDVr7k5BT7Ws32h41MyfJY1ubWBGBAM8Ub up -d  --pull --force-upgrade --confirm-upgrade --stack ${pkg.group}-${pkg.name}
+    - rancher --url http://47.110.247.228:8080/v2-beta --access-key 45E5719D74FB2D7C37EE --secret-key wznFdQb3AVGwaiDQRcf1cAYBGgbmZopmo9p1ss7f up -d  --pull --force-upgrade --confirm-upgrade --stack ${pkg.group}-${pkg.name}
 
 job_report:
   stage: report
@@ -96,7 +96,7 @@ job_report:
     policy: pull-push
   when: on_failure
   script:
-    - curl https://oapi.dingtalk.com/robot/send?access_token=4b6c67515042a6f16ff5799eedf77231ccb785cd1842c28c73c2dd8499113d2f -XPOST -H 'content-type:application/json' -d '{"msgtype":"text","text":{"content":"[${pkg.group}-${pkg.name}] Job Failed. Link:http://172.20.160.7:10080/${pkg.group}/${pkg.name}/pipelines"}}'
+    - curl https://oapi.dingtalk.com/robot/send?access_token=4b6c67515042a6f16ff5799eedf77231ccb785cd1842c28c73c2dd8499113d2f -XPOST -H 'content-type:application/json' -d '{"msgtype":"text","text":{"content":"[${pkg.group}-${pkg.name}] Job Failed. Link:http://47.110.247.228:10080/${pkg.group}/${pkg.name}/pipelines"}}'
 `;
 
     fs.writeFileSync(`${projectRoot}/.gitlab-ci.yml`, tpl);
