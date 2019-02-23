@@ -1,4 +1,4 @@
-package models
+package db
 
 import (
 	"os"
@@ -10,6 +10,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
+// 数据库链接
 var Connection mysql.MySQL
 
 var DBTable = mysql.NewDBTable()

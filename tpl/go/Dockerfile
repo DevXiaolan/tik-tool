@@ -1,7 +1,5 @@
-FROM ubuntu:latest
+FROM scratch
 
-WORKDIR /app
+COPY goapp /
 
-COPY goapp /app
-
-ENTRYPOINT [ "./goapp" ]
+CMD [ "/goapp" ]

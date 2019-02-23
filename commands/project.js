@@ -33,9 +33,7 @@ project.create = async (argv) => {
   let { projectName, group, appId, type } = answer;
 
   let root = `${process.cwd()}/${projectName}`;
-  if (type === 'go') {
-    root = `${process.env.GOPATH}/src/${group}/${projectName}`;
-  }
+ 
   if (fs.existsSync(root)) {
     Err(`Directory [ ${root} ] has already exists`);
     return;
@@ -95,6 +93,17 @@ project.create = async (argv) => {
       Err('Init main.go Failed');
       return;
     }
+    if (shell.sed('-i', '{group}', group, `${root}/src/apis/demo/demo.go`).code !== 0) {
+      Err('Init main.go Failed');
+      return;
+    }
+    if (shell.sed('-i', '{name}', projectName, `${root}/src/apis/demo/demo.go`).code !== 0) {
+      Err('Init main.go Failed');
+      return;
+    }
+    shell.cd(projectName);
+    shell.exec(`go mod init ${group}/${projectName}`);
+    shell.cd('..');
   }
   // 创建项目后git init
   if (!shell.which('git')) {
