@@ -139,6 +139,11 @@ module.exports = (argv) => {
   if (!fs.existsSync(`${projectRoot}/src/router.js`)) {
     Err('router not found.');
   }
+
+  require('dotenv').load({
+    path: `${projectRoot}/.env`,
+  });
+
   const router = fs.readFileSync(`${projectRoot}/src/router.js`).toString();
   
   const ast = esprima.parseScript(router).body;
