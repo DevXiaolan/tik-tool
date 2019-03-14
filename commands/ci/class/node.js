@@ -145,12 +145,13 @@ job_report:
     for (let k in deps) {
       if (fs.existsSync(`${projectRoot}/src/clients/${deps[k].name}.json`)) {
         let tmp = require(`${projectRoot}/src/clients/${deps[k].name}.json`);
-        if (tmp.info.group === pkg.group) {
+        // 开发环境暂时都是external !!
+        if (false && tmp.info.group === pkg.group) {
           // links
           links.push(`${tmp.info.name}:${tmp.info.name}`);
         } else {
           // extenal
-          external_links.push(`${tmp.info.group}/${tmp.info.name}:${tmp.info.name}`);
+          external_links.push(`${tmp.info.group}-${tmp.info.name}/${tmp.info.name}:${tmp.info.name}`);
         }
         envMap[`${tmp.info.name.replace(/-/g, '_').toUpperCase()}_HOST`] = `http://${tmp.info.name}:3000/v1.0.0`;
       }
