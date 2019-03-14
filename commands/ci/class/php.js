@@ -8,7 +8,7 @@ const Base = require('./base');
 module.exports = class PHP extends Base {
   constructor(argv) {
     super(argv);
-    this.env = dotenv.load({ path: `${this.projectRoot}/.env` }).parsed;
+    this.env = dotenv.load({ path: `${this.projectRoot}/.env.example` }).parsed;
   }
 
   gitlabCI() {
