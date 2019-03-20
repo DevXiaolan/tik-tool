@@ -94,6 +94,7 @@ func Scan(req Request, c *gin.Context) {
 
 	// raw data
 	rawData, _ := c.GetRawData()
+
 	m := map[string]interface{}{}
 
 	if len(rawData) > 0 {
@@ -132,12 +133,12 @@ func Scan(req Request, c *gin.Context) {
 			}
 			realReqValue.Field(i).Set(reflect.ValueOf(defaultvalue))
 		case "body":
-			// bodyValue, _ := c.GetPostForm("aaa")
+
 			contentType := c.GetHeader("content-type")
 			bodyValue := ""
-			if contentType == "application/json" {
-				// json mode
 
+			if strings.Contains(contentType, "json") {
+				// json mode
 				if isSimpleType(realReqValue.Field(i)) {
 					// 简单类型
 					if bodyValue, ok := m[json]; ok {
@@ -158,14 +159,11 @@ func Scan(req Request, c *gin.Context) {
 					realReqValue.Field(i).Set(reflect.ValueOf(newStruct))
 				}
 
-			} else {
-				// form data
-				bodyValue, _ = c.GetPostForm(json)
-				if bodyValue != "" {
-					defaultvalue = toType(bodyValue, fieldType)
-				}
-				realReqValue.Field(i).Set(reflect.ValueOf(defaultvalue))
 			}
+			// I dont like form data
+			// so do nothing here
+
+			_ = bodyValue
 		}
 	}
 }
@@ -179,25 +177,25 @@ func toType(v string, t string) interface{} {
 	case "uint64":
 		intval, err := strconv.Atoi(v)
 		if err != nil {
-			return 0
+			return uint64(0)
 		}
 		return uint64(intval)
 	case "int64":
 		intval, err := strconv.Atoi(v)
 		if err != nil {
-			return 0
+			return int64(0)
 		}
 		return int64(intval)
 	case "uint32":
 		intval, err := strconv.Atoi(v)
 		if err != nil {
-			return 0
+			return uint32(0)
 		}
 		return uint32(intval)
 	case "int32":
 		intval, err := strconv.Atoi(v)
 		if err != nil {
-			return 0
+			return int32(0)
 		}
 		return int32(intval)
 	case "int16":
@@ -209,19 +207,19 @@ func toType(v string, t string) interface{} {
 	case "uint16":
 		intval, err := strconv.Atoi(v)
 		if err != nil {
-			return 0
+			return uint16(0)
 		}
 		return uint16(intval)
 	case "float32":
 		floatval, err := strconv.ParseFloat(v, 64)
 		if err != nil {
-			return 0.0
+			return float32(0.0)
 		}
 		return float32(floatval)
 	case "float64":
 		floatval, err := strconv.ParseFloat(v, 64)
 		if err != nil {
-			return 0.0
+			return float64(0.0)
 		}
 		return floatval
 	}
