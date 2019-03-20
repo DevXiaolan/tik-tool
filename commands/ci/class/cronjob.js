@@ -101,7 +101,7 @@ job_deploy:
     - git submodule update --init --recursive`: ''}
   script:
     - rm -f ~/.rancher/cli.json
-    - rancher --url http://47.110.247.228:8080/v2-beta --access-key 45E5719D74FB2D7C37EE --secret-key wznFdQb3AVGwaiDQRcf1cAYBGgbmZopmo9p1ss7f up -d  --pull --force-upgrade --confirm-upgrade --stack ${pkg.group}-${pkg.name}
+    - rancher --url http://47.110.247.228:8080/v2-beta --access-key 45E5719D74FB2D7C37EE --secret-key wznFdQb3AVGwaiDQRcf1cAYBGgbmZopmo9p1ss7f --env Default up -d  --pull --force-upgrade --confirm-upgrade --stack ${pkg.group}-${pkg.name}
    
 job_report:
   stage: report
