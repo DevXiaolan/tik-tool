@@ -143,7 +143,7 @@ job_report:
     for (let k in deps) {
       if (fs.existsSync(`${projectRoot}/src/clients/${deps[k].name}.json`)) {
         let tmp = require(`${projectRoot}/src/clients/${deps[k].name}.json`);
-        if (tmp.info.group === pkg.group) {
+        if (false && tmp.info.group === pkg.group) {
           // links
           links.push(`${tmp.info.name}:${tmp.info.name}`);
         } else {
@@ -173,7 +173,7 @@ ${(env => {
     external_links:
     - 000DB/mongo:mongo
     - 000DB/redis:redis
-    ${(external_links => {
+${(external_links => {
         let output = '';
         external_links.forEach(line => {
           output += `    - ${line}${EOL}`;
