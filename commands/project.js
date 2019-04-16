@@ -21,7 +21,9 @@ project.create = async (argv) => {
     type: 'Input',
     name: 'appId',
     filter: input => Number.parseInt(input),
-    message: 'APP_ID : '
+    message: `APP_ID 参照 google sheet
+${'https://docs.google.com/spreadsheets/d/18xRZ1aD2oad07h5-PspVtgJDs5Mnza3rIG3ry-Ji73o/edit#gid=0'.green}
+APP_ID : `
   },
   {
     type: 'list',
@@ -33,7 +35,7 @@ project.create = async (argv) => {
   let { projectName, group, appId, type } = answer;
 
   let root = `${process.cwd()}/${projectName}`;
- 
+
   if (fs.existsSync(root)) {
     Err(`Directory [ ${root} ] has already exists`);
     return;
