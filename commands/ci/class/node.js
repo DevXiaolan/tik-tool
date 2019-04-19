@@ -196,7 +196,7 @@ ${(links => {
         return output;
       })(links)}
     volumes:
-    - /tmp:/tmp
+    - /data/tmp:/tmp
     tty: true
   `;
     //todo 后续要自动识别服务依赖 加到 external_links
